@@ -1,0 +1,280 @@
+{
+  "checks": [
+    {
+      "name": "Original business functions unchanged",
+      "result": "passed",
+      "detail": "28 function hashes matched; only dialog presentation hooks excluded"
+    },
+    {
+      "name": "Original data, state structure and DOM IDs preserved",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Login validation: wrong password and unknown account",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Manager login",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Existing initial scheduling behavior preserved",
+      "result": "passed",
+      "detail": "Initial phase 2 has no assignments because algorithm validates assigned hours after clearing assignments"
+    },
+    {
+      "name": "Previous, next and current week navigation",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Date selection",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Four-step workflow and publication confirmation accept/cancel",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Automatic scheduling with existing seeded registrations",
+      "result": "passed",
+      "detail": "Executed from open-registration phase so original hour validation has registered hours"
+    },
+    {
+      "name": "Staffing requirement calculations for all three shifts",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Logout",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Employee login and numeric account alias",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Mobile shift registration, cancellation, hours and night-shift progress",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Department restrictions and valid registration submission",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Insufficient hours/night-shift validation and disabled submission",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Mobile supplementary shift registration",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Accessible dialog: focus trap, Escape, inert background and focus restoration",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Emergency leave request and required reason validation",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Manager rejection retains original assignment",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Missing swap target validation",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Shift change request and manager approval",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Emergency leave approval and reassignment",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "All 9 requested viewport sizes for both roles",
+      "result": "passed",
+      "detail": "18 combinations; no page overflow or duplicate IDs; correct day counts"
+    },
+    {
+      "name": "Tablet day-group navigation reaches Sunday",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Orientation change preserves selected day",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Reduced-motion preference",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "Login fits all requested viewport sizes",
+      "result": "passed",
+      "detail": ""
+    },
+    {
+      "name": "200% zoom-equivalent layout viewport",
+      "result": "passed",
+      "detail": "683×384 CSS viewport; physical Safari browser zoom remains unverified"
+    },
+    {
+      "name": "Browser console and runtime errors",
+      "result": "passed",
+      "detail": "No application errors"
+    }
+  ],
+  "viewports": [
+    {
+      "role": "quanly",
+      "width": 320,
+      "height": 568,
+      "visibleCells": 3,
+      "overflow": false
+    },
+    {
+      "role": "quanly",
+      "width": 375,
+      "height": 667,
+      "visibleCells": 3,
+      "overflow": false
+    },
+    {
+      "role": "quanly",
+      "width": 393,
+      "height": 852,
+      "visibleCells": 3,
+      "overflow": false
+    },
+    {
+      "role": "quanly",
+      "width": 430,
+      "height": 932,
+      "visibleCells": 3,
+      "overflow": false
+    },
+    {
+      "role": "quanly",
+      "width": 768,
+      "height": 1024,
+      "visibleCells": 9,
+      "overflow": false
+    },
+    {
+      "role": "quanly",
+      "width": 1024,
+      "height": 768,
+      "visibleCells": 9,
+      "overflow": false
+    },
+    {
+      "role": "quanly",
+      "width": 1366,
+      "height": 768,
+      "visibleCells": 21,
+      "overflow": false
+    },
+    {
+      "role": "quanly",
+      "width": 1440,
+      "height": 900,
+      "visibleCells": 21,
+      "overflow": false
+    },
+    {
+      "role": "quanly",
+      "width": 1920,
+      "height": 1080,
+      "visibleCells": 21,
+      "overflow": false
+    },
+    {
+      "role": "NV01",
+      "width": 320,
+      "height": 568,
+      "visibleCells": 3,
+      "overflow": false
+    },
+    {
+      "role": "NV01",
+      "width": 375,
+      "height": 667,
+      "visibleCells": 3,
+      "overflow": false
+    },
+    {
+      "role": "NV01",
+      "width": 393,
+      "height": 852,
+      "visibleCells": 3,
+      "overflow": false
+    },
+    {
+      "role": "NV01",
+      "width": 430,
+      "height": 932,
+      "visibleCells": 3,
+      "overflow": false
+    },
+    {
+      "role": "NV01",
+      "width": 768,
+      "height": 1024,
+      "visibleCells": 9,
+      "overflow": false
+    },
+    {
+      "role": "NV01",
+      "width": 1024,
+      "height": 768,
+      "visibleCells": 9,
+      "overflow": false
+    },
+    {
+      "role": "NV01",
+      "width": 1366,
+      "height": 768,
+      "visibleCells": 21,
+      "overflow": false
+    },
+    {
+      "role": "NV01",
+      "width": 1440,
+      "height": 900,
+      "visibleCells": 21,
+      "overflow": false
+    },
+    {
+      "role": "NV01",
+      "width": 1920,
+      "height": 1080,
+      "visibleCells": 21,
+      "overflow": false
+    }
+  ],
+  "errors": [],
+  "nativeDialogs": 17,
+  "generatedAt": "2026-10-30T10:35:50.652Z"
+}

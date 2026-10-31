@@ -1,0 +1,15 @@
+{
+  "index.html": "6151de0bf22ae45790842d33936e0039503acfdd42cac9b7b20bd612d72076b8",
+  "style.css": "e8128bf809ffdc592e903f5baf91c4d4b30ba378dc7a84d2b1a13be31746c3ef",
+  "app.js": "933e7bb0a4fa7bb6363db51ddae13051b8a92cad2c24452c315ab5527a7c8372",
+  "shared/domain.js": "72bd70430776fced61c0b6595169c947fa3af4e300504641e3ca7347dd334254",
+  "server/workflows.cjs": "53777df4fdde5f59d44cfefd56fa6e01d79217fa98bb9e748856c132de9ffd1c",
+  "server/handler.cjs": "650d7f81983a6b8fa331f4a9ec3e3135c21ab596063ba9f283c5eae407c9f76a",
+  "server/supabase.cjs": "be1166148da2faf896c57982192058ce2f5ce3d6cdbfef9a5f1ad055f0c95c45",
+  "server/validation.cjs": "a7365657707bb0255ad2353d5f401bc971e5ae89488f9695cbf97082ecf7e7c7",
+  "scripts/provision.cjs": "aeaf0a8eab4e0d2be1b34400725a6b6aa331e7d88b4608ea8924576b24b07d88",
+  "scripts/demo-data.json": "bd89850546612511c17d86e06143b6ab053ec42cd22a44d851f121a50c342ead",
+  "supabase/migrations/202610310001_backend.sql": "0f1f4c65298c6c2afc173ad59fd4000407326d7b3b7bca59af63c23f2c0b21a9",
+  "supabase/migrations/202610310002_employees.sql": "3166420a7a79cbb2751c8f7a4d09407b2a1f456d033719720aa1187073eb6aff",
+  "vercel.json": "7f4ac033c9757a5d168514199614ac75626132faeb50d48057afab5220e8fcc0"
+}

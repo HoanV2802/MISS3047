@@ -1,0 +1,23 @@
+{
+  "name": "2ce-scheduling",
+  "version": "2.0.0",
+  "private": true,
+  "description": "2CE — Supabase Auth, PostgreSQL and vanilla JavaScript",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env scripts/dev.cjs",
+    "test": "node --test tests/backend/*.test.cjs",
+    "test:ui": "node tests/backend/browser.cjs",
+    "provision": "node --env-file-if-exists=.env scripts/provision.cjs",
+    "test:live": "node --env-file-if-exists=.env --test tests/backend/live.cjs tests/audit/live-api.cjs",
+    "build": "node scripts/build.cjs",
+    "test:audit": "node --test tests/audit/*.test.cjs",
+    "test:scheduling": "node --test tests/backend/scheduling-regression.test.cjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "playwright": "^1.56.1"
+  }
+}

@@ -1,0 +1,11 @@
+--- a/shared/domain.js
++++ b/shared/domain.js
+@@ -134,7 +134,7 @@
+   EMPLOYEES.forEach(emp => {
+     const stats = getEmployeeStats(emp.id);
+     const reg = appState.registrations[emp.id];
+-    if (!stats.isValid) {
++    if (stats.regHours < 20 || stats.regEvening < 2) {
+       reg.isDisqualified = true;
+       reg.reason = `Chưa đủ 20h hoặc 2 ca tối`;
+     } else {

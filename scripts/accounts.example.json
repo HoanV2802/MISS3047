@@ -1,0 +1,102 @@
+[
+  {
+    "role": "admin",
+    "phone": "YOUR_ADMIN_E164_NUMBER",
+    "displayName": "Quản trị viên 2CE"
+  },
+  {
+    "role": "manager",
+    "phone": "YOUR_MANAGER_E164_NUMBER",
+    "displayName": "Quản lý 2CE"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV01",
+    "phone": "YOUR_NV01_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV02",
+    "phone": "YOUR_NV02_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV03",
+    "phone": "YOUR_NV03_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV04",
+    "phone": "YOUR_NV04_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV05",
+    "phone": "YOUR_NV05_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV06",
+    "phone": "YOUR_NV06_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV07",
+    "phone": "YOUR_NV07_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV08",
+    "phone": "YOUR_NV08_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV09",
+    "phone": "YOUR_NV09_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV10",
+    "phone": "YOUR_NV10_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV11",
+    "phone": "YOUR_NV11_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV12",
+    "phone": "YOUR_NV12_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV13",
+    "phone": "YOUR_NV13_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV14",
+    "phone": "YOUR_NV14_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV15",
+    "phone": "YOUR_NV15_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV16",
+    "phone": "YOUR_NV16_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV17",
+    "phone": "YOUR_NV17_E164_NUMBER"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV18",
+    "phone": "YOUR_NV18_E164_NUMBER"
+  }
+]

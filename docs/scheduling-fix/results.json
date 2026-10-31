@@ -1,0 +1,67 @@
+{
+  "before": {
+    "phase": 2,
+    "registrations": 73,
+    "assignments": 0,
+    "disqualified": 18,
+    "allocationSha256": "29be1e7109b17f98773a795a9f6a3775c61992d337b606ef54bba660dc20661a"
+  },
+  "after": {
+    "phase": 2,
+    "registrations": 73,
+    "assignments": 65,
+    "disqualified": 0,
+    "allocationSha256": "1634329a7d8342f0a65de68f7824d6c8370454f0317600bdbecaaa59a556a5db"
+  },
+  "historicalStep1": {
+    "phase": 1,
+    "registrations": 73,
+    "assignments": 65,
+    "disqualified": 0,
+    "allocationSha256": "1634329a7d8342f0a65de68f7824d6c8370454f0317600bdbecaaa59a556a5db"
+  },
+  "identicalToHistoricalStep1": true,
+  "independentRuns": 10,
+  "deterministic": true,
+  "remainingAllocationShortfalls": [
+    "NV01",
+    "NV03",
+    "NV04",
+    "NV05",
+    "NV06",
+    "NV17",
+    "NV18"
+  ],
+  "localTests": {
+    "passed": 65,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "kind": "Local integration E2E; Supabase identity provider mocked, PostgreSQL migrations real",
+    "checks": [
+      "Invalid login displays Vietnamese error",
+      "Manager phone login and server-backed workflow",
+      "Mobile registration, working hours, submission and persistence after reload",
+      "Cancellation and invalid-submit state",
+      "Server scheduling and acknowledged publication",
+      "Employee leave request, manager approval, escaped stored text and own history",
+      "Manager rejection persists and appears to the requesting employee",
+      "Shift-change request and approval persist",
+      "Separate account-only Admin dashboard and self-edit guard",
+      "Approved step-2 regression through UI/API: 73 registrations, 65 assignments, zero disqualifications",
+      "Corrected 65-assignment schedule persists across page reload",
+      "27 role/viewport combinations: calendar views, tablet panel order and no page overflow",
+      "Selected day survives orientation change",
+      "Direct Employee API call cannot reach Admin data",
+      "Network/data failure has a working retry without a full-page refresh",
+      "Expired session returns to login",
+      "No browser runtime errors"
+    ],
+    "viewportCombinations": 27,
+    "errors": [],
+    "generatedAt": "2026-10-31T03:01:31.190Z"
+  },
+  "cloudTests": "not run: prohibited by task",
+  "gitCommit": "not created: working directory is not a configured Git repository"
+}

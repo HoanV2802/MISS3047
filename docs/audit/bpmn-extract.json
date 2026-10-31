@@ -1,0 +1,990 @@
+[
+  {
+    "page": "Trang-1",
+    "nodes": {
+      "pool": "Quy trình xếp ca hiện tại 2CE",
+      "lane_ql": "Quản lý",
+      "start": "Lập ca làm việc",
+      "act_jyk": "Xác định số ca cần lập trong tuần",
+      "act_wi5": "Xác định số lượng nhân viên cho từng ca",
+      "act_plp": "Thông báo đăng ký ca làm",
+      "doc_ca": "Danh sách ca",
+      "timer_event": "",
+      "act_ymh": "Tổng hợp đăng ký",
+      "doc_dk": "Danh sách đăng ký",
+      "gw_and_split": "+",
+      "act_050": "Kiểm tra số giờ làm",
+      "act_jyp": "Kiểm tra số ca tối thiểu",
+      "act_u91": "Kiểm tra lịch nghỉ",
+      "gw_and_join": "+",
+      "gw_xor_loop": "X",
+      "act_n23": "Phân bổ nhân viên vào ca phù hợp",
+      "act_jnv": "Kiểm tra đủ người",
+      "gw_du_nguoi": "X",
+      "act_12b": "Tìm nhân viên bổ sung",
+      "act_lp5": "Kiểm tra trùng lịch",
+      "gw_trung_lich": "X",
+      "act_u6t": "Điều chỉnh lịch",
+      "act_03k": "Gửi lịch cho nhân viên",
+      "doc_lich1": "Lịch làm trong tuần",
+      "act_xm9": "Xem xét đổi ca hoặc nghỉ",
+      "act_ia2": "Điều chỉnh lịch",
+      "act_19f": "Gửi lịch sau khi thay đổi",
+      "doc_lich2": "Lịch làm trong tuần",
+      "lane_nv": "Nhân viên",
+      "act_oan": "Đăng ký ca làm",
+      "act_11c": "Kiểm tra lịch",
+      "gw_co_thay_doi": "X",
+      "act_sup": "Phản hồi lịch làm",
+      "act_fub": "Theo dõi lịch trực tiếp trong tuần",
+      "gw_dot_xuat": "X",
+      "end": "",
+      "-Aw1IX-_OSO5SE9B3A4--5": "Pool",
+      "-Aw1IX-_OSO5SE9B3A4--6": "Lane 1",
+      "-Aw1IX-_OSO5SE9B3A4--7": "Lane 2",
+      "-Aw1IX-_OSO5SE9B3A4--8": "Lane 3"
+    },
+    "edges": [
+      {
+        "source": "act_n23",
+        "target": "gw_and_join",
+        "label": ""
+      },
+      {
+        "source": "start",
+        "target": "act_jyk",
+        "label": ""
+      },
+      {
+        "source": "act_jyk",
+        "target": "act_wi5",
+        "label": ""
+      },
+      {
+        "source": "act_wi5",
+        "target": "act_plp",
+        "label": ""
+      },
+      {
+        "source": "timer_event",
+        "target": "act_ymh",
+        "label": ""
+      },
+      {
+        "source": "act_ymh",
+        "target": "gw_and_split",
+        "label": ""
+      },
+      {
+        "source": "gw_and_split",
+        "target": "act_050",
+        "label": ""
+      },
+      {
+        "source": "gw_and_split",
+        "target": "act_jyp",
+        "label": ""
+      },
+      {
+        "source": "gw_and_split",
+        "target": "act_u91",
+        "label": ""
+      },
+      {
+        "source": "act_050",
+        "target": "gw_and_join",
+        "label": ""
+      },
+      {
+        "source": "act_jyp",
+        "target": "gw_and_join",
+        "label": ""
+      },
+      {
+        "source": "act_u91",
+        "target": "gw_and_join",
+        "label": ""
+      },
+      {
+        "source": "gw_and_join",
+        "target": "act_n23",
+        "label": ""
+      },
+      {
+        "source": "act_n23",
+        "target": "act_jnv",
+        "label": ""
+      },
+      {
+        "source": "act_jnv",
+        "target": "gw_du_nguoi",
+        "label": ""
+      },
+      {
+        "source": "gw_du_nguoi",
+        "target": "act_12b",
+        "label": "Không đủ người"
+      },
+      {
+        "source": "act_12b",
+        "target": "gw_xor_loop",
+        "label": ""
+      },
+      {
+        "source": "gw_du_nguoi",
+        "target": "act_lp5",
+        "label": "Đủ người"
+      },
+      {
+        "source": "act_lp5",
+        "target": "gw_trung_lich",
+        "label": ""
+      },
+      {
+        "source": "gw_trung_lich",
+        "target": "act_u6t",
+        "label": "Trùng lịch"
+      },
+      {
+        "source": "act_u6t",
+        "target": "gw_xor_loop",
+        "label": ""
+      },
+      {
+        "source": "gw_xor_loop",
+        "target": "act_n23",
+        "label": ""
+      },
+      {
+        "source": "gw_trung_lich",
+        "target": "act_03k",
+        "label": "Không trùng lịch"
+      },
+      {
+        "source": "act_xm9",
+        "target": "act_ia2",
+        "label": ""
+      },
+      {
+        "source": "act_ia2",
+        "target": "act_19f",
+        "label": ""
+      },
+      {
+        "source": "act_11c",
+        "target": "gw_co_thay_doi",
+        "label": ""
+      },
+      {
+        "source": "gw_co_thay_doi",
+        "target": "act_sup",
+        "label": "Có thay đổi"
+      },
+      {
+        "source": "gw_co_thay_doi",
+        "target": "act_fub",
+        "label": "Không thay đổi"
+      },
+      {
+        "source": "act_fub",
+        "target": "gw_dot_xuat",
+        "label": ""
+      },
+      {
+        "source": "gw_dot_xuat",
+        "target": "end",
+        "label": "Không có thay đổi đột xuất"
+      },
+      {
+        "source": "act_plp",
+        "target": "act_oan",
+        "label": ""
+      },
+      {
+        "source": "act_oan",
+        "target": "timer_event",
+        "label": ""
+      },
+      {
+        "source": "act_03k",
+        "target": "act_11c",
+        "label": ""
+      },
+      {
+        "source": "act_sup",
+        "target": "act_xm9",
+        "label": ""
+      },
+      {
+        "source": "act_19f",
+        "target": "act_fub",
+        "label": ""
+      },
+      {
+        "source": "gw_dot_xuat",
+        "target": "act_xm9",
+        "label": "Có thay đổi đột xuất"
+      }
+    ]
+  },
+  {
+    "page": "TO-BE",
+    "nodes": {
+      "pool": "Quy trình xếp ca làm việc 2CE (To-Be)",
+      "lane_ql": "Quản lý",
+      "start": "Lập ca làm việc",
+      "doc_ca": "Ca làm",
+      "KnSzwUHtoLSR5JjanBDz-1": "Xác định số ca &   và số nhân viên",
+      "KnSzwUHtoLSR5JjanBDz-2": "Thông báo mở cổng   đăng ký ca làm",
+      "0R5DkcErSB7WZhBkDf5F-4": "Kiểm tra",
+      "uNgFl485DXKSy4K8R0aB-4": "",
+      "uNgFl485DXKSy4K8R0aB-6": "Luật kiểm tra: - Kiểm tra số ca tối thiểu",
+      "uNgFl485DXKSy4K8R0aB-33": "",
+      "uNgFl485DXKSy4K8R0aB-29": "Gửi thông báo ca thiếu nhân viên",
+      "uNgFl485DXKSy4K8R0aB-37": "Có ca làm thiếu nhân viên",
+      "0R5DkcErSB7WZhBkDf5F-6": "Gửi lịch cho nhân viên",
+      "0R5DkcErSB7WZhBkDf5F-11": "Xem xét duyệt đổi ca   hoặc yêu cầu nghỉ đột xuất",
+      "uNgFl485DXKSy4K8R0aB-12": "Gửi ca làm",
+      "KnSzwUHtoLSR5JjanBDz-19": "Nhận ca",
+      "0R5DkcErSB7WZhBkDf5F-27": "Tất cả ca làm đủ nhân viên",
+      "lane_nv": "Nhân viên",
+      "0R5DkcErSB7WZhBkDf5F-3": "Đăng ký ca làm trên web",
+      "db_lich": "CSDL Lịch &\nĐăng ký",
+      "0R5DkcErSB7WZhBkDf5F-5": "Xếp ca",
+      "uNgFl485DXKSy4K8R0aB-20": "",
+      "uNgFl485DXKSy4K8R0aB-23": "Kiểm tra",
+      "uNgFl485DXKSy4K8R0aB-26": "Luật kiểm tra: - Kiểm tra số nhân viên trong ca  +Sáng: 1 người  +Chiều: 1 người  +Tối: 2-3 người",
+      "uNgFl485DXKSy4K8R0aB-27": "",
+      "0R5DkcErSB7WZhBkDf5F-14": "Cập nhật lịch mới",
+      "end": "Kết thúc",
+      "0R5DkcErSB7WZhBkDf5F-2": "",
+      "0R5DkcErSB7WZhBkDf5F-7": "Nhận lịch   làm việc",
+      "0R5DkcErSB7WZhBkDf5F-8": "",
+      "0R5DkcErSB7WZhBkDf5F-12": "Gửi yêu cầu đổi thay đổi",
+      "0R5DkcErSB7WZhBkDf5F-16": "có nhu cầu thay đổi",
+      "uNgFl485DXKSy4K8R0aB-7": "Kiểm tra lịch làm việc",
+      "uNgFl485DXKSy4K8R0aB-10": "không nhu cầu thay đổi",
+      "KnSzwUHtoLSR5JjanBDz-17": "Thay đổi lịch đột suất",
+      "0R5DkcErSB7WZhBkDf5F-13": "Theo dõi lịch trực tiếp & làm việc trong tuần",
+      "uNgFl485DXKSy4K8R0aB-15": "",
+      "uNgFl485DXKSy4K8R0aB-31": "Nhận ca bổ sung trên web",
+      "uNgFl485DXKSy4K8R0aB-38": "",
+      "uNgFl485DXKSy4K8R0aB-44": "Có nhân viên nhận ca làm",
+      "uNgFl485DXKSy4K8R0aB-47": "Không có nhân viên nhận ca",
+      "uNgFl485DXKSy4K8R0aB-129": "Không thay đổi lịch đột suất"
+    },
+    "edges": [
+      {
+        "source": "KnSzwUHtoLSR5JjanBDz-2",
+        "target": "0R5DkcErSB7WZhBkDf5F-3",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-3",
+        "target": "0R5DkcErSB7WZhBkDf5F-4",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-31",
+        "target": "uNgFl485DXKSy4K8R0aB-33",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-20",
+        "target": "uNgFl485DXKSy4K8R0aB-29",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-29",
+        "target": "uNgFl485DXKSy4K8R0aB-38",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-20",
+        "target": "0R5DkcErSB7WZhBkDf5F-6",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-6",
+        "target": "0R5DkcErSB7WZhBkDf5F-7",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-12",
+        "target": "0R5DkcErSB7WZhBkDf5F-11",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-11",
+        "target": "0R5DkcErSB7WZhBkDf5F-14",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-14",
+        "target": "uNgFl485DXKSy4K8R0aB-12",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-38",
+        "target": "KnSzwUHtoLSR5JjanBDz-19",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-12",
+        "target": "end",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-33",
+        "target": "0R5DkcErSB7WZhBkDf5F-5",
+        "label": ""
+      },
+      {
+        "source": "start",
+        "target": "KnSzwUHtoLSR5JjanBDz-1",
+        "label": ""
+      },
+      {
+        "source": "KnSzwUHtoLSR5JjanBDz-1",
+        "target": "KnSzwUHtoLSR5JjanBDz-2",
+        "label": ""
+      },
+      {
+        "source": "KnSzwUHtoLSR5JjanBDz-1",
+        "target": "doc_ca",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-4",
+        "target": "uNgFl485DXKSy4K8R0aB-4",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-4",
+        "target": "uNgFl485DXKSy4K8R0aB-33",
+        "label": ""
+      },
+      {
+        "source": "KnSzwUHtoLSR5JjanBDz-19",
+        "target": "uNgFl485DXKSy4K8R0aB-33",
+        "label": ""
+      },
+      {
+        "source": null,
+        "target": "db_lich",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-5",
+        "target": "uNgFl485DXKSy4K8R0aB-23",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-23",
+        "target": "uNgFl485DXKSy4K8R0aB-20",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-23",
+        "target": "uNgFl485DXKSy4K8R0aB-27",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-2",
+        "target": "0R5DkcErSB7WZhBkDf5F-13",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-13",
+        "target": "0R5DkcErSB7WZhBkDf5F-8",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-2",
+        "target": "uNgFl485DXKSy4K8R0aB-15",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-7",
+        "target": "uNgFl485DXKSy4K8R0aB-7",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-8",
+        "target": "end",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-7",
+        "target": "0R5DkcErSB7WZhBkDf5F-2",
+        "label": ""
+      },
+      {
+        "source": "0R5DkcErSB7WZhBkDf5F-8",
+        "target": "uNgFl485DXKSy4K8R0aB-15",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-15",
+        "target": "0R5DkcErSB7WZhBkDf5F-12",
+        "label": ""
+      },
+      {
+        "source": "uNgFl485DXKSy4K8R0aB-38",
+        "target": "uNgFl485DXKSy4K8R0aB-31",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "page": "Bản sao của TO-BE",
+    "nodes": {
+      "ckjZEKCO4Lw1NvRSfup7-2": "",
+      "ckjZEKCO4Lw1NvRSfup7-16": "Quản lý",
+      "ckjZEKCO4Lw1NvRSfup7-17": "Lập ca làm việc",
+      "ckjZEKCO4Lw1NvRSfup7-18": "Ca làm",
+      "ckjZEKCO4Lw1NvRSfup7-22": "Xác định số ca &   và số nhân viên",
+      "ckjZEKCO4Lw1NvRSfup7-23": "Thông báo mở cổng   đăng ký ca làm",
+      "ckjZEKCO4Lw1NvRSfup7-24": "Kiểm tra",
+      "ckjZEKCO4Lw1NvRSfup7-25": "",
+      "ckjZEKCO4Lw1NvRSfup7-27": "Luật kiểm tra: - Kiểm tra số ca tối thiểu",
+      "ckjZEKCO4Lw1NvRSfup7-28": "",
+      "ckjZEKCO4Lw1NvRSfup7-30": "Gửi thông báo ca thiếu nhân viên",
+      "ckjZEKCO4Lw1NvRSfup7-31": "Có ca làm thiếu nhân viên",
+      "ckjZEKCO4Lw1NvRSfup7-32": "Gửi lịch cho nhân viên",
+      "ckjZEKCO4Lw1NvRSfup7-33": "Xem xét duyệt đổi ca   hoặc yêu cầu nghỉ đột xuất",
+      "ckjZEKCO4Lw1NvRSfup7-34": "Gửi ca làm",
+      "ckjZEKCO4Lw1NvRSfup7-36": "Tất cả ca làm đủ nhân viên",
+      "bTVIloLd3SU82eyZ-VY7-2": "Nhận ca",
+      "bTVIloLd3SU82eyZ-VY7-4": "Xác nhận nhân viên nhận ca",
+      "ckjZEKCO4Lw1NvRSfup7-38": "Nhân viên",
+      "ckjZEKCO4Lw1NvRSfup7-39": "Đăng ký ca làm trên web",
+      "bTVIloLd3SU82eyZ-VY7-8": "",
+      "ckjZEKCO4Lw1NvRSfup7-40": "CSDL Lịch &\nĐăng ký",
+      "ckjZEKCO4Lw1NvRSfup7-42": "Xếp ca",
+      "ckjZEKCO4Lw1NvRSfup7-43": "",
+      "ckjZEKCO4Lw1NvRSfup7-44": "Kiểm tra",
+      "ckjZEKCO4Lw1NvRSfup7-47": "Luật kiểm tra: - Kiểm tra số nhân viên trong ca  +Sáng: 1 người  +Chiều: 1 người  +Tối: 2-3 người",
+      "ckjZEKCO4Lw1NvRSfup7-48": "",
+      "ckjZEKCO4Lw1NvRSfup7-50": "Cập nhật lịch mới",
+      "ckjZEKCO4Lw1NvRSfup7-51": "Kết thúc",
+      "ckjZEKCO4Lw1NvRSfup7-55": "",
+      "ckjZEKCO4Lw1NvRSfup7-57": "Nhận lịch   làm việc",
+      "ckjZEKCO4Lw1NvRSfup7-59": "",
+      "ckjZEKCO4Lw1NvRSfup7-60": "Gửi yêu cầu đổi thay đổi",
+      "ckjZEKCO4Lw1NvRSfup7-61": "có nhu cầu thay đổi",
+      "ckjZEKCO4Lw1NvRSfup7-63": "Kiểm tra lịch làm việc",
+      "ckjZEKCO4Lw1NvRSfup7-64": "không nhu cầu thay đổi",
+      "ckjZEKCO4Lw1NvRSfup7-65": "Thay đổi lịch đột suất",
+      "ckjZEKCO4Lw1NvRSfup7-66": "Theo dõi lịch trực tiếp & làm việc trong tuần",
+      "ckjZEKCO4Lw1NvRSfup7-69": "",
+      "ckjZEKCO4Lw1NvRSfup7-70": "Nhận ca bổ sung trên web",
+      "g8flbLYGr-1pLfBzLXOE-0": "",
+      "ckjZEKCO4Lw1NvRSfup7-71": "",
+      "ckjZEKCO4Lw1NvRSfup7-73": "Có nhân viên làm",
+      "ckjZEKCO4Lw1NvRSfup7-75": "Không thay đổi lịch đột suất",
+      "ckjZEKCO4Lw1NvRSfup7-74": "Không có nhân viên"
+    },
+    "edges": [
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-23",
+        "target": "ckjZEKCO4Lw1NvRSfup7-39",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-39",
+        "target": "ckjZEKCO4Lw1NvRSfup7-24",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-43",
+        "target": "ckjZEKCO4Lw1NvRSfup7-30",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-30",
+        "target": "ckjZEKCO4Lw1NvRSfup7-70",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-43",
+        "target": "ckjZEKCO4Lw1NvRSfup7-32",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-32",
+        "target": "ckjZEKCO4Lw1NvRSfup7-57",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-60",
+        "target": "ckjZEKCO4Lw1NvRSfup7-33",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-33",
+        "target": "ckjZEKCO4Lw1NvRSfup7-50",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-50",
+        "target": "ckjZEKCO4Lw1NvRSfup7-34",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-34",
+        "target": "ckjZEKCO4Lw1NvRSfup7-51",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-28",
+        "target": "ckjZEKCO4Lw1NvRSfup7-42",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-17",
+        "target": "ckjZEKCO4Lw1NvRSfup7-22",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-22",
+        "target": "ckjZEKCO4Lw1NvRSfup7-23",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-22",
+        "target": "ckjZEKCO4Lw1NvRSfup7-18",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-24",
+        "target": "ckjZEKCO4Lw1NvRSfup7-25",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-24",
+        "target": "ckjZEKCO4Lw1NvRSfup7-28",
+        "label": ""
+      },
+      {
+        "source": "bTVIloLd3SU82eyZ-VY7-2",
+        "target": "ckjZEKCO4Lw1NvRSfup7-28",
+        "label": ""
+      },
+      {
+        "source": "bTVIloLd3SU82eyZ-VY7-4",
+        "target": "ckjZEKCO4Lw1NvRSfup7-28",
+        "label": ""
+      },
+      {
+        "source": null,
+        "target": "ckjZEKCO4Lw1NvRSfup7-40",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-42",
+        "target": "ckjZEKCO4Lw1NvRSfup7-44",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-44",
+        "target": "ckjZEKCO4Lw1NvRSfup7-43",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-44",
+        "target": "ckjZEKCO4Lw1NvRSfup7-48",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-55",
+        "target": "ckjZEKCO4Lw1NvRSfup7-66",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-66",
+        "target": "ckjZEKCO4Lw1NvRSfup7-59",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-55",
+        "target": "ckjZEKCO4Lw1NvRSfup7-69",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-57",
+        "target": "ckjZEKCO4Lw1NvRSfup7-63",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-59",
+        "target": "ckjZEKCO4Lw1NvRSfup7-51",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-63",
+        "target": "ckjZEKCO4Lw1NvRSfup7-55",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-59",
+        "target": "ckjZEKCO4Lw1NvRSfup7-69",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-69",
+        "target": "ckjZEKCO4Lw1NvRSfup7-60",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-70",
+        "target": "ckjZEKCO4Lw1NvRSfup7-71",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-71",
+        "target": "bTVIloLd3SU82eyZ-VY7-4",
+        "label": ""
+      },
+      {
+        "source": "ckjZEKCO4Lw1NvRSfup7-71",
+        "target": "bTVIloLd3SU82eyZ-VY7-2",
+        "label": ""
+      },
+      {
+        "source": "g8flbLYGr-1pLfBzLXOE-0",
+        "target": "bTVIloLd3SU82eyZ-VY7-2",
+        "label": ""
+      },
+      {
+        "source": "bTVIloLd3SU82eyZ-VY7-8",
+        "target": "ckjZEKCO4Lw1NvRSfup7-24",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "page": "Page-4",
+    "nodes": {
+      "cIrVoktzRhJYhO6RD9PB-1": "Quản lý",
+      "cIrVoktzRhJYhO6RD9PB-2": "Lập ca làm việc",
+      "cIrVoktzRhJYhO6RD9PB-3": "Ca làm",
+      "cIrVoktzRhJYhO6RD9PB-7": "Xác định số ca &   số nhân viên",
+      "cIrVoktzRhJYhO6RD9PB-9": "Kiểm tra",
+      "cIrVoktzRhJYhO6RD9PB-10": "",
+      "cIrVoktzRhJYhO6RD9PB-12": "Luật kiểm tra: - Kiểm tra số ca tối thiểu",
+      "cIrVoktzRhJYhO6RD9PB-13": "",
+      "cIrVoktzRhJYhO6RD9PB-16": "Có ca làm thiếu nhân viên",
+      "cIrVoktzRhJYhO6RD9PB-18": "Xem xét duyệt đổi ca   hoặc yêu cầu nghỉ đột xuất",
+      "cIrVoktzRhJYhO6RD9PB-19": "Gửi lịch cập nhật",
+      "cIrVoktzRhJYhO6RD9PB-20": "Tất cả ca làm  đủ nhân viên",
+      "cIrVoktzRhJYhO6RD9PB-21": "Nhận ca",
+      "WE3fIm3nLva33ym_71E--4": "CSDL Lịch &\nĐăng ký",
+      "WE3fIm3nLva33ym_71E--6": "Xếp ca",
+      "WE3fIm3nLva33ym_71E--8": "Kiểm tra",
+      "WE3fIm3nLva33ym_71E--12": "",
+      "WE3fIm3nLva33ym_71E--11": "Luật kiểm tra: - Kiểm tra số nhân viên trong ca  +Sáng: 1 người  +Chiều: 1 người  +Tối: 2-3 người",
+      "WE3fIm3nLva33ym_71E--7": "",
+      "AIVSSp08eKE47PSyQAt7-5": "",
+      "AIVSSp08eKE47PSyQAt7-7": "Gửi lịch cho  nhân viên",
+      "PtZ4sfB3HDt26MIBRWVZ-3": "",
+      "PtZ4sfB3HDt26MIBRWVZ-5": "Nhận yêu cầu  thay đổi",
+      "WE3fIm3nLva33ym_71E--14": "Cập nhật lịch mới",
+      "-d5BalvBo8Jst9KxUkhn-14": "",
+      "-d5BalvBo8Jst9KxUkhn-16": "Sáng thứ 7 7 giờ",
+      "-d5BalvBo8Jst9KxUkhn-17": "",
+      "-d5BalvBo8Jst9KxUkhn-21": "Sáng chủ nhật  7 giờ",
+      "-5OKMMZ0WwDyhWz08oWT-2": "",
+      "-5OKMMZ0WwDyhWz08oWT-4": "",
+      "-5OKMMZ0WwDyhWz08oWT-6": "5h",
+      "-5OKMMZ0WwDyhWz08oWT-13": "Nhận đăng ký",
+      "kZDDQIu1FDFEBHrNPE3v-1": "",
+      "kZDDQIu1FDFEBHrNPE3v-2": "Mở đăng kí ca làm",
+      "kZDDQIu1FDFEBHrNPE3v-8": "",
+      "kZDDQIu1FDFEBHrNPE3v-16": "",
+      "kZDDQIu1FDFEBHrNPE3v-17": "Ca làm thiếu nhân viên",
+      "BCNj0RZV-aY_bpEG16WF-3": "",
+      "WE3fIm3nLva33ym_71E--1": "Nhân viên",
+      "WE3fIm3nLva33ym_71E--15": "Kết thúc",
+      "WE3fIm3nLva33ym_71E--19": "",
+      "WE3fIm3nLva33ym_71E--23": "",
+      "WE3fIm3nLva33ym_71E--25": "có nhu cầu thay đổi",
+      "WE3fIm3nLva33ym_71E--27": "Kiểm tra lịch làm việc",
+      "WE3fIm3nLva33ym_71E--28": "không nhu cầu thay đổi",
+      "WE3fIm3nLva33ym_71E--29": "Thay đổi lịch đột suất",
+      "WE3fIm3nLva33ym_71E--30": "Theo dõi lịch trực tiếp & làm việc trong tuần",
+      "WE3fIm3nLva33ym_71E--33": "",
+      "WE3fIm3nLva33ym_71E--38": "Không thay đổi lịch đột suất",
+      "rrm1Z8iu3jFsWiOhdp4c-1": "Đăng ký ca làm trên      web",
+      "rrm1Z8iu3jFsWiOhdp4c-9": "Đơn đăng kí ca lam",
+      "iEwsU8mzHSgXaZwurqwO-2": "",
+      "2fUddhHrsNi3lNo4LeMh-1": "Nhận lịch làm việc",
+      "2fUddhHrsNi3lNo4LeMh-5": "Nhận thông báo",
+      "PtZ4sfB3HDt26MIBRWVZ-1": "",
+      "PtZ4sfB3HDt26MIBRWVZ-2": "Gửi yêu cầu thay đổi",
+      "-d5BalvBo8Jst9KxUkhn-24": "Nhận lịch mới",
+      "-5OKMMZ0WwDyhWz08oWT-12": "Nhận thông báo ca thiếu",
+      "-5OKMMZ0WwDyhWz08oWT-16": "Đăng ký bổ sung",
+      "kZDDQIu1FDFEBHrNPE3v-11": "",
+      "BCNj0RZV-aY_bpEG16WF-2": "",
+      "-d5BalvBo8Jst9KxUkhn-22": ""
+    },
+    "edges": [
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-2",
+        "target": "cIrVoktzRhJYhO6RD9PB-7",
+        "label": ""
+      },
+      {
+        "source": "-d5BalvBo8Jst9KxUkhn-14",
+        "target": null,
+        "label": ""
+      },
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-7",
+        "target": "cIrVoktzRhJYhO6RD9PB-3",
+        "label": ""
+      },
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-9",
+        "target": "cIrVoktzRhJYhO6RD9PB-10",
+        "label": ""
+      },
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-9",
+        "target": "cIrVoktzRhJYhO6RD9PB-13",
+        "label": ""
+      },
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-19",
+        "target": "kZDDQIu1FDFEBHrNPE3v-8",
+        "label": ""
+      },
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-21",
+        "target": null,
+        "label": ""
+      },
+      {
+        "source": "-5OKMMZ0WwDyhWz08oWT-4",
+        "target": "cIrVoktzRhJYhO6RD9PB-13",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--6",
+        "target": "WE3fIm3nLva33ym_71E--4",
+        "label": ""
+      },
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-13",
+        "target": "WE3fIm3nLva33ym_71E--6",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--8",
+        "target": "WE3fIm3nLva33ym_71E--7",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--6",
+        "target": "WE3fIm3nLva33ym_71E--8",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--8",
+        "target": "WE3fIm3nLva33ym_71E--12",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--8",
+        "target": "WE3fIm3nLva33ym_71E--7",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--7",
+        "target": null,
+        "label": ""
+      },
+      {
+        "source": "PtZ4sfB3HDt26MIBRWVZ-3",
+        "target": "cIrVoktzRhJYhO6RD9PB-18",
+        "label": ""
+      },
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-18",
+        "target": "WE3fIm3nLva33ym_71E--14",
+        "label": ""
+      },
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-7",
+        "target": "-d5BalvBo8Jst9KxUkhn-14",
+        "label": ""
+      },
+      {
+        "source": "kZDDQIu1FDFEBHrNPE3v-16",
+        "target": "-5OKMMZ0WwDyhWz08oWT-2",
+        "label": ""
+      },
+      {
+        "source": "-5OKMMZ0WwDyhWz08oWT-2",
+        "target": "-5OKMMZ0WwDyhWz08oWT-6",
+        "label": ""
+      },
+      {
+        "source": "-5OKMMZ0WwDyhWz08oWT-6",
+        "target": "cIrVoktzRhJYhO6RD9PB-21",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--7",
+        "target": "kZDDQIu1FDFEBHrNPE3v-16",
+        "label": ""
+      },
+      {
+        "source": "-5OKMMZ0WwDyhWz08oWT-2",
+        "target": "-5OKMMZ0WwDyhWz08oWT-4",
+        "label": ""
+      },
+      {
+        "source": "kZDDQIu1FDFEBHrNPE3v-1",
+        "target": "cIrVoktzRhJYhO6RD9PB-9",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--14",
+        "target": "cIrVoktzRhJYhO6RD9PB-19",
+        "label": ""
+      },
+      {
+        "source": "AIVSSp08eKE47PSyQAt7-5",
+        "target": "PtZ4sfB3HDt26MIBRWVZ-3",
+        "label": ""
+      },
+      {
+        "source": "-d5BalvBo8Jst9KxUkhn-17",
+        "target": "cIrVoktzRhJYhO6RD9PB-9",
+        "label": ""
+      },
+      {
+        "source": "BCNj0RZV-aY_bpEG16WF-3",
+        "target": "-d5BalvBo8Jst9KxUkhn-17",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--19",
+        "target": "WE3fIm3nLva33ym_71E--30",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--30",
+        "target": "WE3fIm3nLva33ym_71E--23",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--19",
+        "target": "WE3fIm3nLva33ym_71E--33",
+        "label": ""
+      },
+      {
+        "source": "iEwsU8mzHSgXaZwurqwO-2",
+        "target": "WE3fIm3nLva33ym_71E--27",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--23",
+        "target": "WE3fIm3nLva33ym_71E--15",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--27",
+        "target": "WE3fIm3nLva33ym_71E--19",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--23",
+        "target": "WE3fIm3nLva33ym_71E--33",
+        "label": ""
+      },
+      {
+        "source": "WE3fIm3nLva33ym_71E--33",
+        "target": "PtZ4sfB3HDt26MIBRWVZ-1",
+        "label": ""
+      },
+      {
+        "source": "2fUddhHrsNi3lNo4LeMh-5",
+        "target": "rrm1Z8iu3jFsWiOhdp4c-1",
+        "label": ""
+      },
+      {
+        "source": "rrm1Z8iu3jFsWiOhdp4c-1",
+        "target": "rrm1Z8iu3jFsWiOhdp4c-9",
+        "label": ""
+      },
+      {
+        "source": "-5OKMMZ0WwDyhWz08oWT-12",
+        "target": "-5OKMMZ0WwDyhWz08oWT-16",
+        "label": ""
+      },
+      {
+        "source": "rrm1Z8iu3jFsWiOhdp4c-1",
+        "target": "kZDDQIu1FDFEBHrNPE3v-11",
+        "label": ""
+      },
+      {
+        "source": "-5OKMMZ0WwDyhWz08oWT-16",
+        "target": "kZDDQIu1FDFEBHrNPE3v-11",
+        "label": ""
+      },
+      {
+        "source": "kZDDQIu1FDFEBHrNPE3v-11",
+        "target": "iEwsU8mzHSgXaZwurqwO-2",
+        "label": ""
+      },
+      {
+        "source": "rrm1Z8iu3jFsWiOhdp4c-1",
+        "target": "BCNj0RZV-aY_bpEG16WF-2",
+        "label": ""
+      },
+      {
+        "source": "kZDDQIu1FDFEBHrNPE3v-1",
+        "target": "2fUddhHrsNi3lNo4LeMh-5",
+        "label": ""
+      },
+      {
+        "source": "AIVSSp08eKE47PSyQAt7-5",
+        "target": "iEwsU8mzHSgXaZwurqwO-2",
+        "label": ""
+      },
+      {
+        "source": "PtZ4sfB3HDt26MIBRWVZ-1",
+        "target": "PtZ4sfB3HDt26MIBRWVZ-3",
+        "label": ""
+      },
+      {
+        "source": "-d5BalvBo8Jst9KxUkhn-22",
+        "target": "WE3fIm3nLva33ym_71E--15",
+        "label": ""
+      },
+      {
+        "source": "kZDDQIu1FDFEBHrNPE3v-16",
+        "target": "-5OKMMZ0WwDyhWz08oWT-12",
+        "label": ""
+      },
+      {
+        "source": "cIrVoktzRhJYhO6RD9PB-19",
+        "target": "-d5BalvBo8Jst9KxUkhn-22",
+        "label": ""
+      },
+      {
+        "source": "-5OKMMZ0WwDyhWz08oWT-16",
+        "target": "-5OKMMZ0WwDyhWz08oWT-4",
+        "label": ""
+      },
+      {
+        "source": "BCNj0RZV-aY_bpEG16WF-2",
+        "target": "BCNj0RZV-aY_bpEG16WF-3",
+        "label": ""
+      }
+    ]
+  }
+]

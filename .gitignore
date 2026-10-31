@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.vercel/
+.demo/
+coverage/
+tests/backend/artifacts/
+.DS_Store
+public/
+.pnpm-store/

@@ -1,0 +1,361 @@
+{
+  "currentRole": null,
+  "weekStatus": 2,
+  "shifts": {
+    "mon-morn": {
+      "id": "mon-morn",
+      "dayKey": "mon",
+      "shiftKey": "morn",
+      "assigned": [],
+      "registered": [
+        "NV10",
+        "NV17"
+      ],
+      "hasChangeReq": false
+    },
+    "mon-after": {
+      "id": "mon-after",
+      "dayKey": "mon",
+      "shiftKey": "after",
+      "assigned": [],
+      "registered": [
+        "NV01",
+        "NV05",
+        "NV13"
+      ],
+      "hasChangeReq": false
+    },
+    "mon-eve": {
+      "id": "mon-eve",
+      "dayKey": "mon",
+      "shiftKey": "eve",
+      "assigned": [],
+      "registered": [
+        "NV02",
+        "NV07",
+        "NV08",
+        "NV15",
+        "NV18"
+      ],
+      "hasChangeReq": false
+    },
+    "tue-morn": {
+      "id": "tue-morn",
+      "dayKey": "tue",
+      "shiftKey": "morn",
+      "assigned": [],
+      "registered": [
+        "NV10",
+        "NV18"
+      ],
+      "hasChangeReq": false
+    },
+    "tue-after": {
+      "id": "tue-after",
+      "dayKey": "tue",
+      "shiftKey": "after",
+      "assigned": [],
+      "registered": [
+        "NV03",
+        "NV06",
+        "NV14"
+      ],
+      "hasChangeReq": false
+    },
+    "tue-eve": {
+      "id": "tue-eve",
+      "dayKey": "tue",
+      "shiftKey": "eve",
+      "assigned": [],
+      "registered": [
+        "NV01",
+        "NV05",
+        "NV07",
+        "NV09",
+        "NV12",
+        "NV15"
+      ],
+      "hasChangeReq": false
+    },
+    "wed-morn": {
+      "id": "wed-morn",
+      "dayKey": "wed",
+      "shiftKey": "morn",
+      "assigned": [],
+      "registered": [
+        "NV11"
+      ],
+      "hasChangeReq": false
+    },
+    "wed-after": {
+      "id": "wed-after",
+      "dayKey": "wed",
+      "shiftKey": "after",
+      "assigned": [],
+      "registered": [
+        "NV02",
+        "NV14",
+        "NV17"
+      ],
+      "hasChangeReq": false
+    },
+    "wed-eve": {
+      "id": "wed-eve",
+      "dayKey": "wed",
+      "shiftKey": "eve",
+      "assigned": [],
+      "registered": [
+        "NV03",
+        "NV05",
+        "NV07",
+        "NV09",
+        "NV12",
+        "NV13",
+        "NV16"
+      ],
+      "hasChangeReq": false
+    },
+    "thu-morn": {
+      "id": "thu-morn",
+      "dayKey": "thu",
+      "shiftKey": "morn",
+      "assigned": [],
+      "registered": [
+        "NV11"
+      ],
+      "hasChangeReq": false
+    },
+    "thu-after": {
+      "id": "thu-after",
+      "dayKey": "thu",
+      "shiftKey": "after",
+      "assigned": [],
+      "registered": [
+        "NV04",
+        "NV15",
+        "NV18"
+      ],
+      "hasChangeReq": false
+    },
+    "thu-eve": {
+      "id": "thu-eve",
+      "dayKey": "thu",
+      "shiftKey": "eve",
+      "assigned": [],
+      "registered": [
+        "NV01",
+        "NV07",
+        "NV10",
+        "NV13",
+        "NV16"
+      ],
+      "hasChangeReq": false
+    },
+    "fri-morn": {
+      "id": "fri-morn",
+      "dayKey": "fri",
+      "shiftKey": "morn",
+      "assigned": [],
+      "registered": [
+        "NV12"
+      ],
+      "hasChangeReq": false
+    },
+    "fri-after": {
+      "id": "fri-after",
+      "dayKey": "fri",
+      "shiftKey": "after",
+      "assigned": [],
+      "registered": [
+        "NV04",
+        "NV15"
+      ],
+      "hasChangeReq": false
+    },
+    "fri-eve": {
+      "id": "fri-eve",
+      "dayKey": "fri",
+      "shiftKey": "eve",
+      "assigned": [],
+      "registered": [
+        "NV02",
+        "NV06",
+        "NV08",
+        "NV11",
+        "NV17"
+      ],
+      "hasChangeReq": false
+    },
+    "sat-morn": {
+      "id": "sat-morn",
+      "dayKey": "sat",
+      "shiftKey": "morn",
+      "assigned": [],
+      "registered": [
+        "NV12"
+      ],
+      "hasChangeReq": false
+    },
+    "sat-after": {
+      "id": "sat-after",
+      "dayKey": "sat",
+      "shiftKey": "after",
+      "assigned": [],
+      "registered": [
+        "NV02",
+        "NV06",
+        "NV16"
+      ],
+      "hasChangeReq": false
+    },
+    "sat-eve": {
+      "id": "sat-eve",
+      "dayKey": "sat",
+      "shiftKey": "eve",
+      "assigned": [],
+      "registered": [
+        "NV01",
+        "NV03",
+        "NV04",
+        "NV08",
+        "NV09",
+        "NV10",
+        "NV14",
+        "NV17"
+      ],
+      "hasChangeReq": false
+    },
+    "sun-morn": {
+      "id": "sun-morn",
+      "dayKey": "sun",
+      "shiftKey": "morn",
+      "assigned": [],
+      "registered": [
+        "NV13"
+      ],
+      "hasChangeReq": false
+    },
+    "sun-after": {
+      "id": "sun-after",
+      "dayKey": "sun",
+      "shiftKey": "after",
+      "assigned": [],
+      "registered": [
+        "NV02",
+        "NV16"
+      ],
+      "hasChangeReq": false
+    },
+    "sun-eve": {
+      "id": "sun-eve",
+      "dayKey": "sun",
+      "shiftKey": "eve",
+      "assigned": [],
+      "registered": [
+        "NV03",
+        "NV04",
+        "NV05",
+        "NV06",
+        "NV08",
+        "NV09",
+        "NV11",
+        "NV14",
+        "NV18"
+      ],
+      "hasChangeReq": false
+    }
+  },
+  "registrations": {
+    "NV01": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV02": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV03": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV04": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV05": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV06": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV07": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV08": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV09": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV10": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV11": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV12": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV13": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV14": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV15": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV16": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV17": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    },
+    "NV18": {
+      "isSubmitted": true,
+      "isDisqualified": false,
+      "reason": ""
+    }
+  },
+  "changeRequests": []
+}
