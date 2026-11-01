@@ -1,5 +1,8 @@
 # Thiết kế backend và cơ sở dữ liệu
 
+> Quy tắc và thứ tự migration hiện hành: [báo cáo bàn giao](audit/2CE-FULL-SYSTEM-REVIEW.md) và [checklist](HANDOVER-TO-STUDENT.md). Mô tả trước bản submitted_plans bên dưới được giữ để đối chiếu lịch sử.
+
+
 ## Ranh giới tin cậy
 
 Browser không giữ token Supabase và không gọi Data API với secret. Mọi thao tác nghiệp vụ đi qua API cùng origin. API xác minh phiên với Supabase Auth, đọc `profiles` mới nhất, kiểm tra vai trò/chủ sở hữu, tải snapshot đáng tin cậy rồi áp dụng hàm nghiệp vụ dùng chung.

@@ -1,6 +1,7 @@
 'use strict';
 const { createHash, randomBytes, createCipheriv, createDecipheriv, createHmac } = require('node:crypto');
 const { AppError, fail } = require('./validation.cjs');
+const {demoConfig,internalEmail,identity}=require('./demo-auth.cjs');
 const hash = value => createHash('sha256').update(value).digest('hex');
 function config(env = process.env) {
   const { SUPABASE_URL: url, SUPABASE_PUBLISHABLE_KEY: publicKey, SUPABASE_SERVICE_ROLE_KEY: legacyKey, SUPABASE_SECRET_KEY: modernKey, APP_ORIGIN: origin, SESSION_ENCRYPTION_KEY: encryptionKey } = env;
@@ -11,7 +12,7 @@ function config(env = process.env) {
   if (!publicKey || !secretKey || !origin || !encryptionKey || Buffer.from(encryptionKey,'base64').length !== 32) fail(503, 'Thiếu cấu hình xác thực của máy chủ.', 'CONFIGURATION');
   const app = new URL(origin);
   if (app.origin !== origin || (app.protocol !== 'https:' && !['localhost','127.0.0.1'].includes(app.hostname))) fail(503, 'APP_ORIGIN phải là địa chỉ HTTPS chính xác (hoặc localhost).');
-  return { url: parsed.origin, publicKey, secretKey, origin, key: Buffer.from(encryptionKey,'base64') };
+  return { url: parsed.origin, publicKey, secretKey, origin, key: Buffer.from(encryptionKey,'base64'), ...demoConfig(env,parsed.origin) };
 }
 function encrypt(value, key) {
   const iv = randomBytes(12), cipher = createCipheriv('aes-256-gcm',key,iv);
@@ -50,9 +51,15 @@ class SupabaseBackend {
     for (const [value,limit] of [[`ip:${ip}`,30],[`phone:${phone}`,10]]) if (!await this.rpc('consume_login_limit',{p_key:key(value),p_limit:limit})) fail(429,'Quá nhiều lần đăng nhập. Vui lòng đợi 5 phút.');
   }
   async login(phone,password,ip) {
+    phone=require('./validation.cjs').phone(phone);
     await this.rateLimit(phone,ip);
-    const tokens=await this.request('/auth/v1/token?grant_type=password',{method:'POST',body:{phone,password}});
+    const emailMode=this.settings.authMode==='staging-email';
+    const email=emailMode?internalEmail(phone,this.settings):null;
+    let tokens;
+    try { tokens=await this.request('/auth/v1/token?grant_type=password',{method:'POST',body:emailMode?{email,password}:{phone,password}}); }
+    catch(error){if(emailMode&&[400,401,403,422].includes(error.status))fail(401,'Số điện thoại hoặc mật khẩu không hợp lệ.','UNAUTHENTICATED');throw error;}
     const profile=await this.profile(tokens.user.id);
+    if(emailMode&&(!profile?.active||profile.id!==tokens.user.id||profile.phone!==phone||tokens.user.email!==email||!tokens.user.email_confirmed_at))fail(401,'Số điện thoại hoặc mật khẩu không hợp lệ.','UNAUTHENTICATED');
     if (!profile?.active) fail(403,'Tài khoản chưa được cấp quyền hoặc đã bị khóa.');
     const session=randomBytes(32).toString('base64url');
     await this.request('/rest/v1/web_sessions',{method:'POST',service:true,body:{id:hash(session),user_id:profile.id,encrypted_tokens:encrypt(tokens,this.settings.key),expires_at:new Date(Date.now()+12*3600000).toISOString()}});
@@ -121,7 +128,7 @@ class SupabaseBackend {
       const taken=await this.request(`/rest/v1/profiles?phone=eq.${encodeURIComponent(number)}&select=id`,{service:true});
       if(taken.length) fail(409,'Số điện thoại đã có tài khoản.');
       if(typeof payload.password!=='string' || payload.password.length<12 || payload.password.length>128) fail(400,'Mật khẩu tài khoản mới cần 12–128 ký tự.');
-      const created=await this.request('/auth/v1/admin/users',{method:'POST',service:true,body:{phone:number,password:payload.password,phone_confirm:true}});
+      const created=await this.request('/auth/v1/admin/users',{method:'POST',service:true,body:{...identity(number,this.settings),password:payload.password}});
       id=created.id;
     }
     await this.rpc('manage_profile',{p_actor:actor.id,p_target:id,p_phone:number,p_name:name,p_role:payload.role,p_employee:employee,p_active:payload.active,p_request:payload.requestId});

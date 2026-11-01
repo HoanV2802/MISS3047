@@ -1,5 +1,10 @@
 # Tài khoản demo, vận hành và khôi phục
 
+> Quy tắc và thứ tự migration hiện hành: [báo cáo bàn giao](audit/2CE-FULL-SYSTEM-REVIEW.md) và [checklist](HANDOVER-TO-STUDENT.md). Mô tả trước bản submitted_plans bên dưới được giữ để đối chiếu lịch sử.
+
+
+Staging không SMS sử dụng `docs/STAGING-EMAIL-AUTH.md`: email nội bộ HMAC + `email_confirm:true`, phone chỉ là identifier trong profile. Không đổi danh tính Auth/UUID của tài khoản đang tồn tại tự động; không gửi password reset qua email nội bộ. Mode phone legacy giữ thiết kế cũ.
+
 ## Tạo tài khoản trong môi trường tin cậy
 
 Chỉ người vận hành có secret key Supabase mới chạy công cụ provisioning. Không chạy file này trong browser, không thêm secret key vào file frontend, build config public hoặc repo.

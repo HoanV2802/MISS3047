@@ -42,7 +42,7 @@ test('repeated corrected scheduling is deterministic and does not change registr
  const stats=proposal.engine(state,employees).getEmployeeStats('NV01');assert.equal(stats.totalHours,stats.assignedHours);
 });
 test('UI, demo data and migrations stay unchanged; domain differs by exactly the approved condition',()=>{
- const root=path.resolve(__dirname,'../..'),baseline=require('../../docs/audit/unchanged-baseline.json');
+ const root=path.resolve(__dirname,'../..'),baseline={...require('../../docs/audit/unchanged-baseline.json'),...require('../legacy/presentation-baseline.json')};
  for(const [file,hash]of Object.entries(baseline)){const bytes=fs.readFileSync(path.join(root,file));const checked=file==='shared/domain.js'?require('../../proposals/scheduling-registration-hours/load-proposal.cjs').historicalSource(bytes.toString('utf8')):bytes;assert.equal(crypto.createHash('sha256').update(checked).digest('hex'),hash,file);}
 });
 test('approved fix does not conceal the original greedy algorithm final-allocation shortfalls',()=>{

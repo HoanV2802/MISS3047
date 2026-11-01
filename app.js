@@ -189,7 +189,7 @@ function openChangeModal(shiftId) {
 
         // Nhân viên chưa được xếp vào ca này
         const targetShift = appState.shifts[sId];
-        if (targetShift.assigned.includes(emp.id)) return;
+        if (targetShift.assigned.includes(emp.id) || !Object.hasOwn(appState.registrations[emp.id]?.submittedShifts || {}, sId)) return;
 
         const dStr = formatDateDM(dates[dIdx]);
         const count = serverStaffing[sId]?.totalAssigned || 0;
@@ -284,9 +284,9 @@ function renderManagerView() {
 
         if (shift.hasChangeReq) {
           tileClass = 'status-pending';
-          badgeHtml = `<span class="status-badge pending">Có đơn xin nghỉ</span>`;
+          badgeHtml = `<span class="status-badge pending">Có đơn chờ duyệt</span>`;
         } else if (appState.weekStatus === 1) {
-          badgeHtml = `<span class="status-badge" style="background:#FFF; border:1px solid var(--border-color); color:var(--color-sub);">Đăng ký: ${shift.registered.length} NV</span>`;
+          badgeHtml = `<span class="status-badge" style="background:#FFF; border:1px solid var(--border-color); color:var(--color-sub);">Đã gửi: ${EMPLOYEES.filter(e => Object.hasOwn(appState.registrations[e.id]?.submittedShifts || {}, shiftId)).length} NV</span>`;
         } else {
           if (ev.isMet) {
             tileClass = 'status-ok';
@@ -305,7 +305,7 @@ function renderManagerView() {
             const deptClass = emp.dept === 'Bếp' ? 'dept-bep' : emp.dept === 'Phục vụ' ? 'dept-phucvu' : 'dept-phache';
             staffListHtml += `
               <div class="staff-tag ${deptClass}" title="${emp.dept}">
-                <span>${escapeHTML(emp.name)}</span>
+                <span>${escapeHTML(emp.name)}${appState.registrations[emp.id]?.protectedShifts?.[shift.id] ? ' · giữ chỗ' : ''}</span>
                 <span style="font-size:13px; opacity:0.8;">${emp.id}</span>
               </div>
             `;
@@ -365,12 +365,12 @@ function renderManagerView() {
         } else {
           targetShiftText = `
             <div style="color:var(--color-sub); margin-bottom:4px;">
-              Ca xin nghỉ: <strong>${day.label} - ${conf.label}</strong> (${conf.hours})
+              ${req.type === 'Đăng ký bổ sung' ? 'Ca xin bổ sung' : 'Ca xin nghỉ'}: <strong>${day.label} - ${conf.label}</strong> (${conf.hours})
             </div>
           `;
         }
 
-        const approveBtnText = req.type === 'Xin đổi ca' ? 'Duyệt (Đổi ca)' : 'Duyệt (Nghỉ ca)';
+        const approveBtnText = req.type === 'Xin đổi ca' ? 'Duyệt (Đổi ca)' : req.type === 'Đăng ký bổ sung' ? 'Duyệt nhận ca' : 'Duyệt (Nghỉ ca)';
 
         return `
           <div style="background:#FFFFFF; border:1px solid var(--border-color); border-radius:8px; padding:8px 10px; font-size:13px;">
@@ -414,7 +414,7 @@ function renderManagerView() {
           <div>
             <strong>${emp.id}</strong> - ${escapeHTML(emp.name)} <span style="font-size:13px; color:var(--color-muted);">(${emp.dept})</span>
           </div>
-          <div>${statusBadge}</div>
+          <div>${statusBadge}<br><small>${reg.needsConfirmation ? 'Cần xác nhận lại' : reg.isSubmitted ? 'Đã gửi đơn' : Object.keys(reg.submittedShifts || {}).length ? 'Có bản đã gửi · bản nháp chưa gửi' : 'Chưa gửi'}</small></div>
         </div>
       `;
     }).join('');
@@ -426,6 +426,9 @@ function renderManagerView() {
 // ============================================================================
 // 10. VẼ GIAO DIỆN NHÂN VIÊN (RENDER EMPLOYEE VIEW VỚI NGÀY THỰC TẾ)
 // ============================================================================
+
+const supplementDraft = new Set();
+let draftWeek = null;
 
 function renderEmployeeView() {
   const empId = appState.currentRole;
@@ -450,6 +453,15 @@ function renderEmployeeView() {
     }
   }
 
+  if (draftWeek !== weekKey() || appState.weekStatus !== 3) supplementDraft.clear();
+  draftWeek = weekKey();
+  const pendingSupplements = new Set(appState.changeRequests
+    .filter(r => r.type === 'Đăng ký bổ sung' && r.status === 'CHỜ DUYỆT')
+    .map(r => r.shiftId));
+  for (const id of supplementDraft) {
+    if (!serverStaffing[id]?.canSupplement || pendingSupplements.has(id)) supplementDraft.delete(id);
+  }
+
   // Header nhân viên
   const avatarEl = document.getElementById('empHeaderAvatar');
   const nameEl = document.getElementById('empHeaderName');
@@ -469,7 +481,7 @@ function renderEmployeeView() {
       noticeEl.innerHTML = `🔒 <strong>Cổng đăng ký đã đóng:</strong> Quản lý quán 2CE đang xếp ca cho ${weekRangeText}.`;
     } else if (appState.weekStatus === 3) {
       noticeEl.className = 'alert-note warn';
-      noticeEl.innerHTML = `⚠️ <strong>Mở đăng ký bổ sung:</strong> Một số ca trong tuần còn thiếu nhân sự. Bạn có thể bấm đăng ký bổ sung.`;
+      noticeEl.innerHTML = `⚠️ <strong>Mở đăng ký bổ sung:</strong> Chọn ca còn chỗ rồi gửi đơn bổ sung để quản lý duyệt.`;
     } else if (appState.weekStatus === 4) {
       noticeEl.className = 'alert-note success';
       const hasMissing = Object.values(appState.shifts).some(s => !evaluateShiftStaffing(s).isMet);
@@ -514,13 +526,15 @@ function renderEmployeeView() {
         const ev = evaluateShiftStaffing(shift);
 
         let tileClass = '';
-        if (isRegistered) tileClass = 'is-picked';
+        if (isRegistered || supplementDraft.has(shiftId)) tileClass = 'is-picked';
         if (isAssigned) tileClass = 'status-ok';
 
         let actionBtnHtml = '';
 
         if (appState.weekStatus === 1) {
-          if (!isDeptValid) {
+          if (appState.registrations[empId]?.protectedShifts?.[shiftId]) {
+            actionBtnHtml = '<span class="status-badge ok">Ca đã duyệt · giữ chỗ</span>';
+          } else if (!isDeptValid) {
             actionBtnHtml = `<div style="font-size:13px; color:var(--color-muted); text-align:center; padding:4px;">Không tuyển ${emp.dept}</div>`;
           } else if (isRegistered) {
             actionBtnHtml = `<button data-click="toggleEmployeeShift('${shiftId}')" class="tile-btn btn-unpick">Bỏ chọn ca</button>`;
@@ -530,8 +544,12 @@ function renderEmployeeView() {
         } else if (appState.weekStatus === 2) {
           actionBtnHtml = `<div style="font-size:13px; color:var(--color-muted); text-align:center; padding:4px;">Đang xếp ca...</div>`;
         } else if (appState.weekStatus === 3) {
-          if (!ev.isMet && isDeptValid && !isAssigned && !isRegistered) {
-            actionBtnHtml = `<button data-click="toggleEmployeeShift('${shiftId}')" class="tile-btn btn-supp">Đăng ký bổ sung</button>`;
+          if (pendingSupplements.has(shiftId)) {
+            actionBtnHtml = '<span class="status-badge pending">Chờ quản lý duyệt</span>';
+          } else if (supplementDraft.has(shiftId)) {
+            actionBtnHtml = `<button data-click="toggleEmployeeShift('${shiftId}')" class="tile-btn btn-unpick">Bỏ chọn ca</button>`;
+          } else if (ev.canSupplement) {
+            actionBtnHtml = `<button data-click="toggleEmployeeShift('${shiftId}')" class="tile-btn btn-supp">Chọn ca bổ sung</button>`;
           } else if (isAssigned || isRegistered) {
             actionBtnHtml = `<div style="font-size:13px; color:var(--status-ok-text); font-weight:700; text-align:center; padding:4px;">Đã có ca này</div>`;
           } else {
@@ -553,7 +571,7 @@ function renderEmployeeView() {
                 <span class="shift-tile-hours">${conf.duration}h</span>
               </div>
               <div class="shift-time">${conf.hours}</div>
-              <div style="font-size:13px; color:var(--color-sub);">${isAssigned ? '✓ Bạn được phân công' : isRegistered ? '✓ Bạn đã đăng ký' : 'Chưa đăng ký'}</div>
+              <div style="font-size:13px; color:var(--color-sub);">${isAssigned ? '✓ Bạn được phân công' : isRegistered ? '✓ Bạn đã đăng ký' : supplementDraft.has(shiftId) ? 'Đã chọn · Chưa gửi' : pendingSupplements.has(shiftId) ? 'Đã gửi đơn bổ sung' : 'Chưa đăng ký'}</div>
             </div>
             ${actionBtnHtml}
             <div style="font-size:13px; color:var(--color-muted); text-align:right; margin-top:2px;">${formatDateDM(weekDates[index])}</div>
@@ -575,6 +593,9 @@ function renderEmployeeView() {
   const alertBox = document.getElementById('empRuleAlertBox');
   const btnSubmit = document.getElementById('btnSubmitEmpRegistration');
   const badgeStatus = document.getElementById('empSubmitStatusBadge');
+  const registrationOpen = appState.weekStatus === 1;
+  document.getElementById('empHoursLabel').textContent = registrationOpen ? 'Tổng số giờ đã chọn:' : 'Tổng số giờ được xếp:';
+  document.getElementById('empEveLabel').textContent = registrationOpen ? 'Số ca tối đã chọn:' : 'Số ca tối được xếp:';
 
   if (hoursText) hoursText.innerText = `${stats.totalHours} / 20 tiếng ${stats.isHoursValid ? '✅' : '(Chưa đủ)'}`;
   if (hoursBar) {
@@ -595,7 +616,7 @@ function renderEmployeeView() {
         alertBox.innerHTML = `<span>✅</span><div><strong>Lịch làm việc đảm bảo:</strong> Bạn đang được phân công đủ ${stats.totalHours} giờ và ${stats.eveningCount} ca tối tuần này.</div>`;
       } else {
         alertBox.className = 'alert-note warn';
-        alertBox.innerHTML = `<span>⚠️</span><div><strong>Chưa đủ 20 giờ làm tuần:</strong> Hiện bạn đang được phân công <strong>${stats.totalHours} giờ</strong> (${stats.eveningCount} ca tối) do vừa có ca xin nghỉ/đổi.</div>`;
+        alertBox.innerHTML = `<span>⚠️</span><div><strong>Chưa đạt mục tiêu tuần:</strong> Hiện bạn đang được phân công <strong>${stats.totalHours} giờ</strong> (${stats.eveningCount} ca tối) trong lịch hiện tại.</div>`;
       }
     } else {
       if (stats.isValid) {
@@ -609,7 +630,22 @@ function renderEmployeeView() {
   }
 
   if (btnSubmit) {
-    btnSubmit.disabled = appState.weekStatus !== 1 || !stats.isValid;
+    const supplementOpen = appState.weekStatus === 3;
+    btnSubmit.disabled = supplementOpen ? supplementDraft.size === 0 : !registrationOpen || !stats.isValid || appState.registrations[empId]?.isSubmitted;
+    btnSubmit.textContent = registrationOpen ? (appState.registrations[empId]?.isSubmitted ? 'Đã gửi đăng ký' : 'Gửi Đơn Đăng Ký Ca Làm') : supplementOpen ? 'Gửi đơn đăng ký bổ sung' : 'Đã chốt đăng ký tuần';
+    const hint = document.getElementById('empSubmitHint');
+    const form = appState.registrations[empId];
+    const savedCount = Object.keys(form?.submittedShifts || {}).length;
+    hint.hidden = false;
+    hint.textContent = ({
+      1: form?.needsConfirmation ? 'Tuần cũ cần xác nhận lại. Kiểm tra ca đã chọn rồi gửi đơn.' :
+        form?.isSubmitted ? `Đã gửi ${savedCount} ca. Bạn có thể chỉnh sửa rồi gửi lại.` :
+        savedCount ? `Thay đổi chưa gửi. Khi xếp lịch, quản lý vẫn dùng bản đã gửi gồm ${savedCount} ca.` :
+        'Bản nháp chưa gửi. Chọn đủ 20 giờ và 2 ca tối rồi bấm Gửi đơn để được xét xếp lịch.',
+      2: 'Quản lý đang xếp ca. Đợt gửi đơn đăng ký tuần đã kết thúc.',
+      3: supplementDraft.size ? `Đã chọn ${supplementDraft.size} ca. Bạn có thể bỏ chọn trước khi gửi. Quản lý sẽ duyệt từng ca.` : 'Chọn ít nhất một ca bổ sung để gửi đơn cho quản lý.',
+      4: 'Lịch đã phát hành. Nếu cần đổi hoặc nghỉ, chọn “Xin đổi/nghỉ” trong phần Ca làm việc của tôi.'
+    })[appState.weekStatus] || '';
   }
 
   if (badgeStatus) {
@@ -632,7 +668,7 @@ function renderEmployeeView() {
         const conf = SHIFT_CONFIGS.find(c => c.key === shift.shiftKey);
         const dayIdx = DAYS.findIndex(d => d.key === shift.dayKey);
         const dateStr = formatDateDM(weekDates[dayIdx]);
-        myShifts.push({ dayLabel: day.label, dateStr, shiftLabel: conf.label, hours: conf.hours, shiftId: shift.id });
+        myShifts.push({ protected: !!appState.registrations[emp.id]?.protectedShifts?.[shift.id], dayLabel: day.label, dateStr, shiftLabel: conf.label, hours: conf.hours, shiftId: shift.id });
       }
     });
 
@@ -642,7 +678,7 @@ function renderEmployeeView() {
       assignedListEl.innerHTML = myShifts.map(s => `
         <div style="background:#FFFFFF; padding:6px 10px; border-radius:6px; border:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
           <div>
-            <strong>${s.dayLabel} (${s.dateStr})</strong> • ${s.shiftLabel} <span style="color:var(--color-muted);">(${s.hours})</span>
+            <strong>${s.dayLabel} (${s.dateStr})</strong> • ${s.shiftLabel}${s.protected ? ' · đã duyệt, giữ chỗ' : ''} <span style="color:var(--color-muted);">(${s.hours})</span>
           </div>
           ${appState.weekStatus === 4 ? `
             <button data-click="openChangeModal('${s.shiftId}')" class="btn btn-secondary" style="padding:2px 6px; font-size:13px;">Xin đổi/nghỉ</button>
@@ -785,10 +821,10 @@ function renderCalendarPresentation(role) {
 
 function updateProgressAccessibility() {
   const stats = getEmployeeStats(appState.currentRole);
-  [['empHoursBar', stats.totalHours, 20, 'Số giờ đăng ký'], ['empEveBar', stats.eveningCount, 2, 'Số ca tối']].forEach(([id, value, max, label]) => {
+  [['empHoursBar', stats.totalHours, 20, 'empHoursLabel'], ['empEveBar', stats.eveningCount, 2, 'empEveLabel']].forEach(([id, value, max, label]) => {
     const bar = document.getElementById(id);
     bar.setAttribute('role', 'progressbar');
-    bar.setAttribute('aria-label', label);
+    bar.setAttribute('aria-labelledby', label);
     bar.setAttribute('aria-valuemin', '0');
     bar.setAttribute('aria-valuemax', String(max));
     bar.setAttribute('aria-valuenow', String(Math.min(value, max)));
@@ -854,13 +890,49 @@ function showStatus(message, error=false) {
   const dialogError=document.getElementById('changeRequestError');
   if(dialogError) {dialogError.hidden=!(error&&document.getElementById('modalChangeReq').style.display!=='none');dialogError.textContent=error?message:'';}
 }
+
+let skeletonTarget = null;
+let skeletonTimer;
+function clearSkeleton() {
+  clearTimeout(skeletonTimer);
+  skeletonTarget?.classList.remove('is-loading-skeleton');
+  skeletonTarget = null;
+}
+function beginSkeleton(target, message) {
+  clearSkeleton();
+  showStatus(message);
+  document.getElementById('apiStatus').classList.add('loading-announcement');
+  skeletonTarget = target;
+  // Fast requests keep the current content. Never delay showing the response.
+  skeletonTimer = setTimeout(() => target?.classList.add('is-loading-skeleton'), 120);
+}
+function calendarForLoading() {
+  const table = document.querySelector('.active-view .shift-matrix');
+  const body = table.tBodies[0];
+  if (!body.rows.length) {
+    for (const shift of SHIFT_CONFIGS) {
+      const row = body.insertRow();
+      const heading = document.createElement('th');
+      heading.className = 'shift-col-header-time';
+      heading.textContent = shift.label;
+      row.append(heading);
+      for (let index = 0; index < DAYS.length; index++) {
+        const tile = document.createElement('div');
+        tile.className = 'shift-tile';
+        row.insertCell().append(tile);
+      }
+    }
+    renderCalendarPresentation(currentProfile.role);
+  }
+  return table;
+}
 async function api(path,body) {
   let response;
   try { response=await fetch(path,{method:body===undefined?'GET':'POST',credentials:'same-origin',headers:body===undefined?{}:{'Content-Type':'application/json','X-2CE-Request':'1'},body:body===undefined?undefined:JSON.stringify(body)}); }
   catch { throw new Error('Không thể kết nối máy chủ. Vui lòng kiểm tra mạng và thử lại.'); }
   const result=await response.json().catch(()=>({error:'Máy chủ trả về phản hồi không hợp lệ.'}));
   if(!response.ok) {
-    if(response.status===401) { if(document.getElementById('modalChangeReq').style.display!=='none') closeChangeModal(); currentProfile=null; appState.currentRole=null; dataReady=false; ++loadingSequence; switchView('login'); }
+    if(response.status===401) { clearSkeleton(); showStatus(''); if(document.getElementById('modalChangeReq').style.display!=='none') closeChangeModal(); currentProfile=null; appState.currentRole=null; dataReady=false; ++loadingSequence; switchView('login'); }
     const error=new Error(result.error || 'Thao tác thất bại.');error.status=response.status;throw error;
   }
   return result;
@@ -875,15 +947,20 @@ async function handleLoginSubmit(event) {
   const button=document.querySelector('#loginForm button[type="submit"]');
   if(button.disabled) return;
   button.disabled=true;button.textContent='Đang đăng nhập…';
+  beginSkeleton(button, 'Đang đăng nhập…');
   const errorEl=document.getElementById('loginErrorMsg');errorEl.style.display='none';
   try {
     const {profile}=await api('/api/auth',{action:'login',phone:document.getElementById('loginUsername').value,password:document.getElementById('loginPassword').value});
     document.getElementById('loginPassword').value='';
     await enterSession(profile);
   } catch(error) {errorEl.textContent=error.message;errorEl.style.display='block';}
-  finally {button.disabled=false;button.textContent='Đăng nhập';}
+  finally {
+    if (skeletonTarget === button) { clearSkeleton(); showStatus(''); }
+    button.disabled=false;button.textContent='Đăng nhập';
+  }
 }
 async function enterSession(profile) {
+  supplementDraft.clear();
   currentProfile=profile;
   appState.currentRole=profile.role==='manager'?'quanly':profile.role==='admin'?'admin':profile.employee_id;
   if(profile.role==='manager') document.querySelector('#viewManager .user-name').textContent=profile.display_name;
@@ -897,16 +974,17 @@ async function handleLogout() {
     currentProfile=null;appState.currentRole=null;dataReady=false;++loadingSequence;
     EMPLOYEES=[];serverStaffing={};appState.shifts={};appState.registrations={};appState.changeRequests=[];
     document.getElementById('loginPassword').value='';
-    showStatus('');switchView('login');
+    clearSkeleton();showStatus('');switchView('login');
   } catch(error) {showStatus(error.message,true);}
 }
-function setWorkspaceBusy(busy) {
-  document.querySelectorAll('.active-view .page-container').forEach(node=>{node.inert=busy;node.setAttribute('aria-busy',String(busy));});
+function setWorkspaceBusy(locked, loading = locked) {
+  document.querySelectorAll('.active-view .page-container').forEach(node=>{node.inert=locked;node.setAttribute('aria-busy',String(loading));});
 }
 async function refreshWorkspace() {
   if(!currentProfile || currentProfile.role==='admin') return;
   const sequence=++loadingSequence, selected=weekKey();
-  dataReady=false;setWorkspaceBusy(true);showStatus('Đang tải lịch làm việc…');
+  dataReady=false;setWorkspaceBusy(true);
+  if (!pendingAction) beginSkeleton(calendarForLoading(), 'Đang tải lịch làm việc…');
   try {
     const workspace=await api(`/api/workspace?week=${selected}`);
     if(sequence!==loadingSequence) return;
@@ -916,11 +994,25 @@ async function refreshWorkspace() {
     appState.shifts=Object.fromEntries(DAYS.flatMap(day=>SHIFT_CONFIGS.map(conf=>{const id=`${day.key}-${conf.key}`;return [id,appState.shifts[id]];})));
     dataReady=true;renderAll();renderMyRequests();showStatus('');
   } catch(error) {if(sequence===loadingSequence) showStatus(error.message,true);}
-  finally {if(sequence===loadingSequence) setWorkspaceBusy(!dataReady);}
+  finally {
+    if(sequence===loadingSequence && !pendingAction) {
+      clearSkeleton();
+      setWorkspaceBusy(!dataReady, false);
+    }
+  }
 }
 async function runAction(action,payload={},successAlert=false) {
   if(pendingAction||!dataReady) return false;
-  pendingAction=true;setWorkspaceBusy(true);showStatus('Đang lưu thay đổi…');
+  let target;
+  if (action === 'registration') target = document.querySelector(`#empMatrixBody [data-shift-id="${CSS.escape(payload.shiftId)}"] .shift-tile`);
+  else if (action === 'request') target = document.querySelector('#modalChangeReq .modal-footer .btn-primary');
+  else if (action === 'submit') target = document.getElementById('btnSubmitEmpRegistration');
+  else if (action === 'approve' || action === 'reject') {
+    target = document.querySelector(`#managerRequestList [data-click="${action}ChangeRequest('${CSS.escape(payload.requestId)}')"]`);
+  }
+  else target = calendarForLoading();
+  beginSkeleton(target, 'Đang lưu thay đổi…');
+  pendingAction=true;setWorkspaceBusy(true);
   const selectedWeek=weekKey();
   const command={week:selectedWeek,revision:workspaceRevision,requestId:crypto.randomUUID(),action,payload};
   try {
@@ -928,12 +1020,13 @@ async function runAction(action,payload={},successAlert=false) {
     const result=await api('/api/action',command);
     await refreshWorkspace();
     if(!dataReady) {showStatus('Thao tác đã lưu nhưng chưa tải được lịch mới. Vui lòng tải lại trang.',true);return true;}
+    clearSkeleton();
     if(successAlert) alert(result.message);
     return true;
   } catch(error) {
     if(error.status===409) await refreshWorkspace();
     showStatus(error.message,true);return false;
-  } finally {pendingAction=false;setWorkspaceBusy(!dataReady);}
+  } finally {clearSkeleton();pendingAction=false;setWorkspaceBusy(!dataReady, false);}
 }
 async function changeWeekStatus(statusNumber) {
   if(!dataReady||pendingAction||statusNumber===appState.weekStatus) return;
@@ -947,9 +1040,24 @@ async function approveChangeRequest(requestId) { await runAction('approve',{requ
 async function rejectChangeRequest(requestId) { await runAction('reject',{requestId},true); }
 async function toggleEmployeeShift(shiftId) {
   const shift=appState.shifts[shiftId];if(!shift) return;
-  await runAction('registration',{shiftId,selected:appState.weekStatus===3 || !shift.registered.includes(appState.currentRole)});
+  if (!dataReady || pendingAction) return;
+  if (appState.weekStatus === 3) {
+    if (!serverStaffing[shiftId]?.canSupplement) return;
+    if (supplementDraft.has(shiftId)) supplementDraft.delete(shiftId);
+    else supplementDraft.add(shiftId);
+    renderAll();
+    return;
+  }
+  await runAction('registration',{shiftId,selected:!shift.registered.includes(appState.currentRole)});
 }
-async function handleEmployeeSubmit() { await runAction('submit',{},true); }
+async function handleEmployeeSubmit() {
+  if (appState.weekStatus === 3) {
+    if (supplementDraft.size) await runAction('submit', {shiftIds:[...supplementDraft]}, true);
+  } else await runAction('submit', {}, true);
+}
+async function withdrawSupplement(requestId) {
+  await runAction('withdraw', {requestId}, true);
+}
 async function submitChangeRequestForm() {
   if(pendingAction) return;
   const type=document.querySelector('input[name="changeTypeRadio"]:checked').value;
@@ -966,12 +1074,18 @@ async function submitChangeRequestForm() {
 function renderMyRequests() {
   const node=document.getElementById('empRequestHistory');
   if(currentProfile?.role!=='employee') return;
-  node.innerHTML=appState.changeRequests.length?appState.changeRequests.map(req=>`<div class="request-history-item"><strong>${escapeHTML(DAYS.find(d=>d.key===appState.shifts[req.shiftId].dayKey).label)} · ${escapeHTML(SHIFT_CONFIGS.find(c=>c.key===appState.shifts[req.shiftId].shiftKey).label)}</strong><span class="status-badge ${req.status==='ĐÃ DUYỆT'?'ok':'pending'}">${escapeHTML(req.status)}</span><p>${escapeHTML(req.type)} — ${escapeHTML(req.reason)}</p></div>`).join(''):'<p class="empty-note">Bạn chưa gửi yêu cầu nào trong tuần này.</p>';
+  node.innerHTML=appState.changeRequests.length?appState.changeRequests.map(req=>`<div class="request-history-item"><strong>${escapeHTML(DAYS.find(d=>d.key===appState.shifts[req.shiftId].dayKey).label)} · ${escapeHTML(SHIFT_CONFIGS.find(c=>c.key===appState.shifts[req.shiftId].shiftKey).label)}</strong><span class="status-badge ${req.status==='ĐÃ DUYỆT'?'ok':'pending'}">${escapeHTML(req.status)}</span><p>${escapeHTML(req.type)} — ${escapeHTML(req.reason)}${req.type === 'Đăng ký bổ sung' && req.status === 'ĐÃ DUYỆT' && !appState.shifts[req.shiftId].assigned.includes(req.empId) ? ' · Không còn trong phân công hiện tại' : ''}</p>${req.type === 'Đăng ký bổ sung' && req.status === 'CHỜ DUYỆT' ? `<button type="button" class="btn btn-secondary" data-click="withdrawSupplement('${req.id}')">Rút đơn bổ sung</button>` : ''}</div>`).join(''):'<p class="empty-note">Bạn chưa gửi yêu cầu nào trong tuần này.</p>';
 }
 async function loadAdmin() {
-  showStatus('Đang tải tài khoản…');
+  const list = document.getElementById('adminAccountList');
+  beginSkeleton(list, 'Đang tải tài khoản…');
+  list.setAttribute('aria-busy', 'true');
   try {const result=await api('/api/admin');adminAccounts=result.accounts;renderAdminView();showStatus('');return true;}
   catch(error) {showStatus(error.message,true);return false;}
+  finally {
+    if (skeletonTarget === list) clearSkeleton();
+    list.setAttribute('aria-busy', 'false');
+  }
 }
 function renderAdminView() {
   document.getElementById('adminHeaderName').textContent=currentProfile.display_name;
@@ -996,9 +1110,10 @@ async function saveAdminAccount(event) {
   const body={id:fields.id.value||undefined,phone:fields.phone.value,displayName:fields.displayName.value,role:fields.role.value,employeeId:fields.role.value==='employee'?fields.employeeId.value:null,active:fields.active.checked,requestId:crypto.randomUUID()};
   if(!body.id) body.password=fields.password.value;
   pendingAction=true;form.querySelector('[type=submit]').disabled=true;
+  beginSkeleton(form.querySelector('[type=submit]'), 'Đang lưu tài khoản…');
   try {await api('/api/admin',body);resetAdminForm();if(await loadAdmin())showStatus('Đã lưu tài khoản.');}
   catch(error) {showStatus(error.message,true);}
-  finally {pendingAction=false;form.querySelector('[type=submit]').disabled=false;}
+  finally {clearSkeleton();pendingAction=false;form.querySelector('[type=submit]').disabled=false;}
 }
 window.addEventListener('pageshow',event=>{if(event.persisted) restoreSession();});
 
@@ -1009,7 +1124,7 @@ function retryWorkspace() { if(currentProfile?.role==='admin')loadAdmin();else r
 const uiHandlers = {
   handleLoginSubmit, handleLogout, changeWeek, resetCurrentWeek, onDatePicked,
   changeWeekStatus, triggerAutoScheduling, approveChangeRequest, rejectChangeRequest,
-  toggleEmployeeShift, handleEmployeeSubmit, onChangeTypeToggle, openChangeModal,
+  withdrawSupplement, toggleEmployeeShift, handleEmployeeSubmit, onChangeTypeToggle, openChangeModal,
   closeChangeModal, submitChangeRequestForm, selectCalendarDay, changeCalendarGroup,
   editAdminAccount, resetAdminForm, saveAdminAccount, retryWorkspace
 };

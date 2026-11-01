@@ -48,14 +48,25 @@ function createHandler({backend,origin}) {
         week(body.week); uuid(body.requestId);
         if(!Number.isInteger(body.revision)||body.revision<0) fail(400,'Phiên bản dữ liệu không hợp lệ.');
         authorizeAction(profile,body.action);
-        const fingerprint=createHash('sha256').update(JSON.stringify([body.week,body.revision,body.action,body.payload])).digest('hex');
-        const prior=await backend.operation(profile.id,body.requestId);
-        if(prior) { if(prior.fingerprint!==fingerprint) fail(409,'Mã yêu cầu đã được dùng cho thao tác khác.'); return send(200,prior.result); }
+        const intent = [body.week, body.revision, body.action, body.payload];
+        // An account can be relinked. A retry must refer to the same employee too.
+        if (profile.role === 'employee') intent.push(profile.employee_id);
+        const fingerprint = createHash('sha256').update(JSON.stringify(intent)).digest('hex');
+        const command = {
+          p_actor: profile.id, p_action: body.action, p_request: body.requestId,
+          p_week: body.week, p_revision: body.revision, p_fingerprint: fingerprint,
+          p_expected_employee_id: profile.employee_id
+        };
+        const prior = await backend.operation(profile.id, body.requestId);
+        if (prior) {
+          if (prior.fingerprint !== fingerprint) fail(409,'Mã yêu cầu đã được dùng cho thao tác khác.');
+          // Recheck active role and binding under the same DB lock even on replay.
+          return send(200, await backend.commit({...command, p_state: null, p_result: null}));
+        }
         const snapshot=await backend.snapshot(body.week);
         if(snapshot.revision!==body.revision) fail(409,'Lịch đã thay đổi. Vui lòng tải lại trước khi tiếp tục.','CONFLICT');
         const {state,result}=applyAction(snapshot,profile,body.action,body.payload,body.requestId);
-        await backend.commit({p_actor:profile.id,p_action:body.action,p_request:body.requestId,p_week:body.week,p_revision:body.revision,p_fingerprint:fingerprint,p_state:state,p_result:result});
-        return send(200,result);
+        return send(200, await backend.commit({...command, p_state: state, p_result: result}));
       }
       if(path==='/api/admin') {
         permission(profile,['admin']);

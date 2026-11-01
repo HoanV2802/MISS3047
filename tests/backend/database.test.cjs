@@ -4,7 +4,7 @@ const {randomUUID}=require('node:crypto');
 const {database,profiles,ids,domain,employees}=require('./helpers.cjs');
 let db;
 before(async()=>{db=await database();});after(async()=>{await db?.close();});
-const commit=(state,revision=0,id=randomUUID(),actor=ids.manager,action='phase',week='2026-10-26')=>db.query('select commit_workspace($1,$2,$3,$4,$5,$6,$7,$8)',[actor,action,id,week,revision,'test-'+id,state,{message:'saved'}]);
+const commit=(state,revision=0,id=randomUUID(),actor=ids.manager,action='phase',week='2026-10-26')=>db.query('select commit_workspace($1,$2,$3,$4,$5,$6,$7,$8,$9)',[actor,action,id,week,revision,'test-'+id,state,{message:'saved'},Object.values(profiles).find(p=>p.id===actor).employee_id]);
 test('migrations apply and all application tables have RLS enabled',async()=>{
   const rows=(await db.query("select relname,relrowsecurity from pg_class where relnamespace='public'::regnamespace and relkind='r'")).rows;
   assert.equal(rows.length,12);assert(rows.every(r=>r.relrowsecurity));
@@ -53,7 +53,7 @@ test('admin role assignment is audited, blocks self-administration and revokes i
 });
 test('persistent login rate limit is atomic and denies excess attempts',async()=>{for(let i=0;i<3;i++)assert.equal((await db.query("select consume_login_limit('test-ip',3) as allowed")).rows[0].allowed,true);assert.equal((await db.query("select consume_login_limit('test-ip',3) as allowed")).rows[0].allowed,false);});
 test('approval status, assignment changes and audit trail commit together; duplicate approval is rejected',async()=>{
- const week='2026-11-09';let state=structuredClone(require('../../scripts/demo-data.json'));state.weekStatus=1;domain.engine(state,employees).runSchedulingAlgorithm();state.weekStatus=4;
+ const week='2026-11-09';let state=require('../../scripts/submitted-demo.cjs')();state.weekStatus=1;domain.engine(state,employees).runSchedulingAlgorithm();state.weekStatus=4;
  await commit(state,0,randomUUID(),ids.manager,'phase',week);
  const {applyAction}=require('../../server/workflows.cjs');
  const key=Object.values(state.shifts).find(s=>s.assigned.includes('NV01')).id,requestId=randomUUID();

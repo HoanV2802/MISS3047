@@ -1,5 +1,8 @@
 # Quy tắc giữ nguyên và những thay đổi có chủ đích
 
+> Quy tắc và thứ tự migration hiện hành: [báo cáo bàn giao](audit/2CE-FULL-SYSTEM-REVIEW.md) và [checklist](HANDOVER-TO-STUDENT.md). Mô tả trước bản submitted_plans bên dưới được giữ để đối chiếu lịch sử.
+
+
 ## Thuật toán gốc
 
 Các hàm lịch sử tính toán/xếp ca/duyệt nằm trong `shared/domain.js`. Chỉ `runSchedulingAlgorithm()` có một điều kiện eligibility được sửa theo phê duyệt; getEmployeeStats, isDeptAllowed, evaluateShiftStaffing, approveChangeRequest và rejectChangeRequest giữ nguyên. Kiểm thử so hash với bản audit gốc sau khi hoàn nguyên đúng một điều kiện trong bản sao để chứng minh không có thay đổi khác. Luồng duyệt thực tế hiện gọi server/approvals.cjs để kiểm tra đăng ký, điều kiện người thay và quota; không gọi approveChangeRequest lịch sử trong domain. Hàm lịch sử được giữ để so sánh, không phải đường ghi dữ liệu được API sử dụng. State thay đổi được server lưu giao dịch.

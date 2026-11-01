@@ -273,7 +273,57 @@ body.modal-open { overflow: hidden; }
 }
 /* Backend states and account administration reuse the existing design system. */
 .api-status { max-width: 1552px; margin: 16px auto; padding: 12px 20px; }
-[aria-busy="true"] { opacity: .65; }
+/* Announce pending requests without inserting a banner above the schedule. */
+.api-status.loading-announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+:is(.shift-matrix.is-loading-skeleton .shift-tile, .shift-tile.is-loading-skeleton, .btn.is-loading-skeleton) {
+  position: relative;
+  background: var(--bg-card, #fff);
+  border-color: var(--border-sub);
+  box-shadow: none;
+}
+:is(.shift-matrix.is-loading-skeleton .shift-tile, .shift-tile.is-loading-skeleton) > * {
+  visibility: hidden;
+}
+.btn.is-loading-skeleton { color: transparent; }
+:is(.shift-matrix.is-loading-skeleton .shift-tile, .shift-tile.is-loading-skeleton, .btn.is-loading-skeleton)::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  pointer-events: none;
+  background: linear-gradient(100deg, #e9e4df 25%, #f6f3f0 48%, #e9e4df 72%);
+  background-size: 240% 100%;
+  mask: linear-gradient(#000 0 0) left top / 52% 12px no-repeat,
+        linear-gradient(#000 0 0) left 0 top 28px / 78% 8px no-repeat,
+        linear-gradient(#000 0 0) left 0 top 46px / 64% 8px no-repeat,
+        linear-gradient(#000 0 0) left bottom / 90% 28px no-repeat;
+  animation: schedule-shimmer 1.5s ease-in-out infinite;
+}
+.btn.is-loading-skeleton::after {
+  inset: 38% 23%;
+  border-radius: 99px;
+  mask: none;
+}
+#adminAccountList.is-loading-skeleton {
+  min-height: 72px;
+  background: linear-gradient(100deg, #e9e4df 25%, #f6f3f0 48%, #e9e4df 72%) 0 0 / 240% 100%;
+  mask: linear-gradient(#000 0 0) left top / 44% 10px no-repeat,
+        repeating-linear-gradient(transparent 0 25px, #000 25px 35px, transparent 35px 56px) left top / 70% 100% no-repeat;
+  animation: schedule-shimmer 1.5s ease-in-out infinite;
+}
+#adminAccountList.is-loading-skeleton > * { visibility: hidden; }
+@keyframes schedule-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -70% 0; }
+}
 .admin-grid { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap: 24px; align-items: start; }
 .admin-grid h2 { margin-bottom: 20px; }
 .account-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border-sub); }

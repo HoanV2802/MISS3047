@@ -212,7 +212,7 @@
           <!-- Danh sách đơn xin đổi ca / nghỉ đột xuất chờ duyệt -->
           <div class="card">
             <div class="card-header">
-              <span class="card-title">Yêu cầu đổi ca & nghỉ</span>
+              <span class="card-title">Đơn đăng ký bổ sung, đổi ca & nghỉ</span>
               <span id="pendingReqCountBadge" class="status-badge pending">0 đơn</span>
             </div>
 
@@ -362,7 +362,7 @@
 
             <div class="progress-stat-box">
               <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700;">
-                <span>Tổng số giờ đã chọn:</span>
+                <span id="empHoursLabel">Tổng số giờ đã chọn:</span>
                 <span id="empHoursText" style="color: var(--color-main);">0 / 20 tiếng</span>
               </div>
               <div class="stat-bar-bg">
@@ -370,7 +370,7 @@
               </div>
 
               <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700;">
-                <span>Số ca tối đã chọn:</span>
+                <span id="empEveLabel">Số ca tối đã chọn:</span>
                 <span id="empEveText" style="color: var(--color-main);">0 / 2 ca</span>
               </div>
               <div class="stat-bar-bg">
@@ -384,7 +384,8 @@
                 lệ.</div>
             </div>
 
-            <button id="btnSubmitEmpRegistration" data-click="handleEmployeeSubmit()" class="btn btn-primary"
+            <p id="empSubmitHint" class="empty-note" hidden></p>
+            <button id="btnSubmitEmpRegistration" aria-describedby="empRuleAlertBox empSubmitHint" data-click="handleEmployeeSubmit()" class="btn btn-primary"
               style="width: 100%; padding: 10px;" disabled>
               Gửi Đơn Đăng Ký Ca Làm
             </button>

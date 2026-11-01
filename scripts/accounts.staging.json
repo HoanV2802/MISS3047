@@ -1,0 +1,102 @@
+[
+  {
+    "role": "admin",
+    "displayName": "Quản trị staging",
+    "phone": "+447700900100"
+  },
+  {
+    "role": "manager",
+    "displayName": "Quản lý staging",
+    "phone": "+447700900101"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV01",
+    "phone": "+447700900102"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV02",
+    "phone": "+447700900103"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV03",
+    "phone": "+447700900104"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV04",
+    "phone": "+447700900105"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV05",
+    "phone": "+447700900106"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV06",
+    "phone": "+447700900107"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV07",
+    "phone": "+447700900108"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV08",
+    "phone": "+447700900109"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV09",
+    "phone": "+447700900110"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV10",
+    "phone": "+447700900111"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV11",
+    "phone": "+447700900112"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV12",
+    "phone": "+447700900113"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV13",
+    "phone": "+447700900114"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV14",
+    "phone": "+447700900115"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV15",
+    "phone": "+447700900116"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV16",
+    "phone": "+447700900117"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV17",
+    "phone": "+447700900118"
+  },
+  {
+    "role": "employee",
+    "employeeId": "NV18",
+    "phone": "+447700900119"
+  }
+]

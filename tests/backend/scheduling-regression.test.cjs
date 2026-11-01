@@ -22,7 +22,7 @@ test('corrected results are deterministic across identical clones, valid engine 
  assert.deepEqual(Object.fromEntries(Object.entries(state.shifts).map(([id,s])=>[id,[...s.registered]])),registrations);
 });
 test('manager scheduling at step 2 uses the corrected engine without changing workflow guards',()=>{
- const snapshot={state:structuredClone(demo),employees,revision:0};snapshot.state.weekStatus=2;
+ const snapshot={state:require('../../scripts/submitted-demo.cjs')(),employees,revision:0};snapshot.state.weekStatus=2;
  const result=applyAction(snapshot,profiles.manager,'generate',{},randomUUID());
  assert.equal(count(result.state),65);assert.equal(result.state.weekStatus,3);
  assert.equal(result.result.details.fromPhase,2);

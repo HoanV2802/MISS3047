@@ -1,4 +1,4 @@
--- READ-ONLY verification after applying migrations 001 and 002 in a dedicated project.
+-- Read-only verification of the scheduling schema and bound commit RPC.
 -- Does not migrate, provision, seed, reset or expose credentials.
 select version() as postgres_version;
 select to_regclass('auth.users') as auth_users, to_regprocedure('auth.uid()') as auth_uid;
@@ -18,3 +18,11 @@ select has_table_privilege('authenticated','public.profiles','UPDATE') as client
  has_table_privilege('anon','public.employees','SELECT') as anonymous_can_read_employees;
 -- Expected: 12 RLS=true tables; 4 definer functions with empty search_path,
 -- anon/authenticated EXECUTE=false, service EXECUTE=true; 18 employees; 3 false grants.
+
+select to_regprocedure('public.commit_workspace(uuid,text,uuid,date,integer,text,jsonb,jsonb,text)') is not null as bound_commit_installed,
+       to_regprocedure('public.commit_workspace(uuid,text,uuid,date,integer,text,jsonb,jsonb)') is null as unbound_commit_removed;
+-- Both must be true for the actor-bound API.
+
+select count(*) = 3 as submitted_plan_columns_installed from information_schema.columns
+where table_schema='public' and table_name='registration_submissions'
+  and column_name in ('submitted_shifts','protected_shifts','needs_confirmation');

@@ -1,7 +1,7 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');const {randomUUID}=require('node:crypto');
 const {applyAction,visibleWorkspace}=require('../../server/workflows.cjs');const {phone,week}=require('../../server/validation.cjs');
 const {domain,employees,profiles}=require('./helpers.cjs');
-const seed=()=>({state:structuredClone(require('../../scripts/demo-data.json')),employees,revision:0});
+const seed=()=>({state:require('../../scripts/submitted-demo.cjs')(),employees,revision:0});
 const apply=(snapshot,role,action,payload={})=>applyAction(snapshot,profiles[role],action,payload,randomUUID());
 test('phone normalization and invalid inputs',()=>{assert.equal(phone('0900 000 003'),'+84900000003');assert.equal(phone('0084900000003'),'+84900000003');assert.throws(()=>phone('NV01'));assert.throws(()=>week('2026-02-30'));assert.throws(()=>week('2026-10-27'));});
 test('phase-2 scheduling uses registered eligibility and produces 65 demo assignments',()=>{const x=seed();domain.engine(x.state,employees).runSchedulingAlgorithm();assert.equal(Object.values(x.state.shifts).reduce((n,s)=>n+s.assigned.length,0),65);assert.equal(Object.values(x.state.registrations).filter(r=>r.isDisqualified).length,0);});
@@ -10,7 +10,16 @@ test('employees/admin cannot schedule, approve or change workflow',()=>{for(cons
 test('registration enforces ownership, duplicate, department and phase boundaries',()=>{const x=seed();x.state.weekStatus=1;assert.throws(()=>apply(x,'employee','registration',{shiftId:'mon-after',selected:true}),e=>e.status===409);assert.throws(()=>apply(x,'employee','registration',{shiftId:'mon-morn',selected:true}),e=>e.status===403);assert.throws(()=>apply(x,'employee','registration',{shiftId:'wed-after',selected:true,empId:'NV02'}),e=>e.status===400);const result=apply(x,'employee','registration',{shiftId:'wed-after',selected:true});assert(result.state.shifts['wed-after'].registered.includes('NV01'));assert(!x.state.shifts['wed-after'].registered.includes('NV01'));x.state.weekStatus=2;assert.throws(()=>apply(x,'employee','registration',{shiftId:'wed-after',selected:true}),e=>e.status===409);});
 test('submission validates 20 hours and two evenings, and closed windows',()=>{const x=seed();x.state.weekStatus=1;assert(apply(x,'employee','submit').state.registrations.NV01.isSubmitted);for(const s of Object.values(x.state.shifts))s.registered=[];assert.throws(()=>apply(x,'employee','submit'),e=>e.status===422);x.state.weekStatus=4;assert.throws(()=>apply(x,'employee','submit'),e=>e.status===409);});
 test('publication requires explicit acknowledgement; invalid workflow states fail',()=>{assert.throws(()=>apply(seed(),'manager','phase',{status:4}),e=>e.code==='CONFIRM_MISSING');assert.equal(apply(seed(),'manager','phase',{status:4,acceptMissing:true}).state.weekStatus,4);for(const status of [0,5,'1',null])assert.throws(()=>apply(seed(),'manager','phase',{status}),e=>e.status===400);});
-test('supplementary registration and closed/full shifts',()=>{const x=seed();x.state.weekStatus=3;const result=apply(x,'employee','registration',{shiftId:'wed-after',selected:true});assert(result.state.shifts['wed-after'].assigned.includes('NV01'));x.state.shifts['wed-after'].assigned=['NV02','NV10'];assert.throws(()=>apply(x,'employee','registration',{shiftId:'wed-after',selected:true}),e=>e.status===409);});
+test('supplement requests stay pending and legacy clicks cannot bypass approval',()=>{
+ const x=seed();x.state.weekStatus=3;
+ assert.throws(()=>apply(x,'employee','registration',{shiftId:'wed-after',selected:true}),{status:409});
+ const submitted=apply(x,'employee','submit',{shiftIds:['wed-after']});
+ assert.equal(submitted.state.changeRequests[0].status,'CHỜ DUYỆT');
+ assert(!submitted.state.shifts['wed-after'].assigned.includes('NV01'));
+ assert(!submitted.state.shifts['wed-after'].registered.includes('NV01'));
+ x.state.shifts['wed-after'].assigned=['NV02','NV10'];
+ assert.throws(()=>apply(x,'employee','submit',{shiftIds:['wed-after']}),{status:409});
+});
 test('request ownership, duplicates, required reason, target validation and approval/rejection',()=>{
   let x=seed();x.state.weekStatus=1;domain.engine(x.state,employees).runSchedulingAlgorithm();x.state.weekStatus=4;
   const id=Object.values(x.state.shifts).find(s=>s.assigned.includes('NV01')).id;

@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "node --env-file-if-exists=.env scripts/dev.cjs",
+    "demo:offline": "node scripts/offline-demo.cjs",
     "test": "node --test tests/backend/*.test.cjs",
     "test:ui": "node tests/backend/browser.cjs",
     "provision": "node --env-file-if-exists=.env scripts/provision.cjs",
